@@ -144,7 +144,7 @@ export function Navbar() {
                 alt="Skywell"
                 width={100}
                 height={24}
-                className={`h-6 w-auto ${isDark ? "" : "filter invert"}`}
+                className="h-6 w-auto"
                 onError={() => setImageError(true)}
                 priority
               />
@@ -295,11 +295,11 @@ export function Navbar() {
                   <div className="flex items-center justify-between py-4">
                     {!imageError ? (
                       <Image
-                        src="/images/skywell-logo.svg"
+                        src="https://res.cloudinary.com/dckrspiqe/image/upload/v1745844359/skywell-logo_yfkg37.svg"
                         alt="Skywell"
                         width={100}
                         height={24}
-                        className={`h-6 w-auto ${isDark ? "" : "filter invert"}`}
+                        className="h-6 w-auto"
                         onError={() => setImageError(true)}
                       />
                     ) : (
