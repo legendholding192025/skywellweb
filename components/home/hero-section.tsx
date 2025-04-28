@@ -35,7 +35,7 @@ export function HeroSection() {
   }, [])
 
   return (
-    <div ref={sectionRef} className="relative w-full h-screen overflow-hidden bg-black perspective-1000">
+    <div ref={sectionRef} className="relative w-full min-h-[100svh] overflow-hidden bg-black perspective-1000">
       {/* Video Background with parallax effect */}
       <motion.div
         className="absolute inset-0 z-0"
@@ -51,6 +51,7 @@ export function HeroSection() {
           muted
           loop
           playsInline
+          poster="https://res.cloudinary.com/dckrspiqe/image/upload/v1745844235/hero-poster_usdzyq.jpg"
         >
           <source src="https://res.cloudinary.com/dckrspiqe/video/upload/v1745844235/hero-background_usdzyq.mp4" type="video/mp4" />
           Your browser does not support the video tag.
@@ -62,16 +63,16 @@ export function HeroSection() {
 
       {/* Content with parallax effect */}
       <motion.div
-        className="relative z-20 flex flex-col items-center justify-center h-full px-4 text-white"
+        className="relative z-20 flex flex-col items-center justify-center min-h-[100svh] px-4 text-white"
         style={{
           y: contentY,
           opacity: contentOpacity,
         }}
       >
-        <div className="container mx-auto max-w-6xl">
-          <div className="max-w-xl mx-auto md:mx-0">
+        <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="max-w-xl mx-auto md:mx-0 space-y-6 md:space-y-8">
             <motion.h1
-              className="text-5xl md:text-7xl font-bold tracking-tight mb-6 text-center md:text-left"
+              className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight mb-4 sm:mb-6 text-center md:text-left"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.5 }}
@@ -80,7 +81,7 @@ export function HeroSection() {
             </motion.h1>
 
             <motion.p
-              className="text-2xl md:text-3xl font-medium mb-6 text-center md:text-left"
+              className="text-xl sm:text-2xl md:text-3xl font-medium mb-4 sm:mb-6 text-center md:text-left"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.7 }}
@@ -89,7 +90,7 @@ export function HeroSection() {
             </motion.p>
 
             <motion.p
-              className="text-xl text-gray-300 mb-8 text-center md:text-left"
+              className="text-lg sm:text-xl text-gray-300 mb-6 sm:mb-8 text-center md:text-left"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.9 }}
@@ -98,21 +99,21 @@ export function HeroSection() {
             </motion.p>
 
             <motion.div
-              className="flex flex-wrap gap-4 justify-center md:justify-start"
+              className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start w-full sm:w-auto"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.1 }}
             >
               {/* Primary Button with Enhanced Styling */}
               <motion.div
-                className="relative"
+                className="relative w-full sm:w-auto"
                 onMouseEnter={() => setIsPrimaryHovered(true)}
                 onMouseLeave={() => setIsPrimaryHovered(false)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
               >
                 <div className="absolute inset-0 bg-[#4a9cd6] rounded-md blur-md opacity-50 group-hover:opacity-75 transition-all duration-300"></div>
-                <button className="relative bg-gradient-to-r from-[#4a9cd6] to-[#3a8cc6] text-white font-medium px-6 py-2.5 rounded-md text-sm shadow-lg flex items-center justify-center overflow-hidden group z-10">
+                <button className="relative w-full sm:w-auto bg-gradient-to-r from-[#4a9cd6] to-[#3a8cc6] text-white font-medium px-6 py-3 sm:py-2.5 rounded-md text-base sm:text-sm shadow-lg flex items-center justify-center overflow-hidden group z-10">
                   <span className="relative z-10 flex items-center">
                     Explore Models
                     <motion.div animate={{ x: isPrimaryHovered ? 5 : 0 }} transition={{ duration: 0.3 }}>
@@ -125,13 +126,13 @@ export function HeroSection() {
 
               {/* Secondary Button with Enhanced Styling */}
               <motion.div
-                className="relative"
+                className="relative w-full sm:w-auto"
                 onMouseEnter={() => setIsSecondaryHovered(true)}
                 onMouseLeave={() => setIsSecondaryHovered(false)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <button className="relative bg-transparent border-2 border-white text-white font-medium px-6 py-2 rounded-md text-sm flex items-center justify-center overflow-hidden group">
+                <button className="relative w-full sm:w-auto bg-transparent border-2 border-white text-white font-medium px-6 py-3 sm:py-2 rounded-md text-base sm:text-sm flex items-center justify-center overflow-hidden group">
                   <span className="relative z-10 flex items-center">
                     Book a Test Drive
                     <motion.div
@@ -150,15 +151,15 @@ export function HeroSection() {
 
         {/* Animated scroll indicator */}
         <motion.div
-          className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
+          className="absolute bottom-6 sm:bottom-10 left-1/2 transform -translate-x-1/2"
           animate={{ y: [0, 10, 0] }}
           transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1.5 }}
         >
           <div className="flex flex-col items-center">
-            <span className="text-sm text-gray-300 mb-2">Scroll to explore</span>
-            <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
+            <span className="text-xs sm:text-sm text-gray-300 mb-2">Scroll to explore</span>
+            <div className="w-5 sm:w-6 h-8 sm:h-10 border-2 border-white rounded-full flex justify-center">
               <motion.div
-                className="w-1 h-3 bg-white rounded-full mt-2"
+                className="w-1 h-2 sm:h-3 bg-white rounded-full mt-2"
                 animate={{ y: [0, 15, 0] }}
                 transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1.5 }}
               />
