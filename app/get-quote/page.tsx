@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Suspense } from "react"
 import { GetQuoteForm } from "@/components/get-quote/get-quote-form"
 import { Navbar } from "@/components/common/navbar"
 import { Footer } from "@/components/common/footer"
@@ -21,7 +21,9 @@ export default function GetQuotePage() {
             </p>
           </div>
           
-          <GetQuoteForm />
+          <Suspense fallback={<div>Loading...</div>}>
+            <GetQuoteForm />
+          </Suspense>
         </div>
       </div>
       <Footer />

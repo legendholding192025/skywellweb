@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { Suspense } from "react"
 import { TestDriveForm } from "../../components/test-drive/test-drive-form"
 import { Navbar } from "../../components/common/navbar"
 import { Footer } from "../../components/common/footer"
@@ -18,7 +18,9 @@ export default function TestDrivePage() {
             </p>
           </div>
           
-          <TestDriveForm />
+          <Suspense fallback={<div>Loading...</div>}>
+            <TestDriveForm />
+          </Suspense>
         </div>
       </div>
       <Footer />
