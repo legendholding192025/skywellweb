@@ -1,7 +1,7 @@
 import React from "react"
-import { Navbar } from "@/components/common/navbar"
-import { Footer } from "@/components/common/footer"
-import { ContactForm } from "@/components/contact/contact-form"
+import { Navbar } from "../../components/common/navbar"
+import { Footer } from "../../components/common/footer"
+import { ContactForm } from "../../components/contact/contact-form"
 import { MapPin, Phone, Mail, MessageSquare } from "lucide-react"
 
 export const metadata = {

@@ -1,9 +1,9 @@
 "use client"
 
 import React from "react"
-import { TestDriveForm } from "@/components/test-drive/test-drive-form"
-import { Navbar } from "@/components/common/navbar"
-import { Footer } from "@/components/common/footer"
+import { TestDriveForm } from "../../components/test-drive/test-drive-form"
+import { Navbar } from "../../components/common/navbar"
+import { Footer } from "../../components/common/footer"
 
 export default function TestDrivePage() {
   return (
