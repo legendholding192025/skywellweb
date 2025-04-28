@@ -5,6 +5,7 @@ import { SpecsSection } from "@/components/home/specs-section"
 import { DesignSection } from "@/components/home/design-section"
 import { ExploreSection } from "@/components/home/explore-section"
 import { Footer } from "@/components/common/footer"
+import { WhyChooseSection } from "@/components/home/why-choose-section"
 
 export default function Home() {
   return (
@@ -14,7 +15,7 @@ export default function Home() {
       <FeatureSection />
       <ExploreSection />
       <SpecsSection />
-      <DesignSection />
+      <WhyChooseSection/>
       <Footer />
     </div>
   )

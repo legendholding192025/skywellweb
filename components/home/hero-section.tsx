@@ -52,7 +52,7 @@ export function HeroSection() {
           loop
           playsInline
         >
-          <source src="/videos/hero-background.mp4" type="video/mp4" />
+          <source src="https://res.cloudinary.com/dckrspiqe/video/upload/v1745844235/hero-background_usdzyq.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </motion.div>

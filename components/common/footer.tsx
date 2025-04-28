@@ -64,7 +64,7 @@ export function Footer() {
           {/* Column 1: Company Info */}
           <div className="space-y-6">
             <Link href="/" className="inline-block">
-              <Image src="/images/skywell-logo.svg"
+              <Image src="https://res.cloudinary.com/dckrspiqe/image/upload/v1745844359/skywell-logo_yfkg37.svg"
                 alt="Skywell"
                 width={120}
                 height={30}
