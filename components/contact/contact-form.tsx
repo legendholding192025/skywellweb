@@ -1,177 +1,172 @@
 "use client"
 
-import React, { useState } from "react"
-import { useForm } from "react-hook-form"
-import { motion } from "framer-motion"
+import { useState } from "react"
 import { useTheme } from "next-themes"
-import { Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-
-type FormData = {
-  name: string
-  email: string
-  subject: string
-  message: string
-}
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useToast } from "@/components/ui/use-toast"
 
 export function ContactForm() {
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme === "dark"
-  const [isSubmitted, setIsSubmitted] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const { toast } = useToast()
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<FormData>({
-    defaultValues: {
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    },
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
+    enquiryType: "general"
   })
 
-  const onSubmit = async (data: FormData) => {
-    setIsLoading(true)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-
-      console.log("Contact form submitted:", data);
+      // Here you would typically send the form data to your API
+      await new Promise(resolve => setTimeout(resolve, 1000)) // Simulated API call
       
-      setIsLoading(false)
-      setIsSubmitted(true)
-      reset()
+      toast({
+        title: "Message Sent!",
+        description: "Thank you for your enquiry. We'll get back to you shortly.",
+      })
 
-      // Reset success message after 5 seconds
-      setTimeout(() => {
-        setIsSubmitted(false)
-      }, 5000)
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+        enquiryType: "general"
+      })
     } catch (error) {
-      console.error("Error submitting form:", error)
-      setIsLoading(false)
+      toast({
+        title: "Error",
+        description: "There was a problem sending your message. Please try again.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
   return (
-    <div>
-      {isSubmitted ? (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className={`p-8 rounded-xl ${isDark ? "bg-[#4a9cd620]" : "bg-[#4a9cd610]"} text-center`}
-        >
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#4a9cd6] mb-6">
-            <Check className="h-8 w-8 text-white" />
+    <form onSubmit={handleSubmit} className={`p-8 rounded-xl shadow-lg ${isDark ? "bg-gray-900" : "bg-white"}`}>
+      <h3 className={`text-xl font-bold mb-6 ${isDark ? "text-white" : "text-black"}`}>Send Us a Message</h3>
+      
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className={`block text-sm font-medium mb-2 ${isDark ? "text-gray-200" : "text-gray-700"}`}>
+              Full Name *
+            </label>
+            <Input
+              type="text"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              required
+              className={isDark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"}
+              placeholder="John Doe"
+            />
           </div>
-          <h3 className="text-2xl font-bold mb-4">Message Sent!</h3>
-          <p className="text-lg mb-6">
-            Thank you for reaching out. We've received your message and will get back to you shortly.
-          </p>
-          <Button onClick={() => setIsSubmitted(false)} className="bg-[#4a9cd6] hover:bg-[#3a8cc6] text-white">
-            Send Another Message
-          </Button>
-        </motion.div>
-      ) : (
-        <motion.form
-          onSubmit={handleSubmit(onSubmit)}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className={`p-8 rounded-xl ${isDark ? "bg-gray-900" : "bg-white"} shadow-lg`}
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Name Field */}
-            <div className="space-y-2">
-              <Label htmlFor="name" className={errors.name ? "text-red-500" : ""}>
-                Full Name*
-              </Label>
-              <Input
-                id="name"
-                placeholder="Enter your full name"
-                className={`${errors.name ? "border-red-500" : ""} ${isDark ? "bg-gray-800" : "bg-gray-50"}`}
-                {...register("name", { required: "Name is required" })}
-              />
-              {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
-            </div>
-
-            {/* Email Field */}
-            <div className="space-y-2">
-              <Label htmlFor="email" className={errors.email ? "text-red-500" : ""}>
-                Email Address*
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="your.email@example.com"
-                className={`${errors.email ? "border-red-500" : ""} ${isDark ? "bg-gray-800" : "bg-gray-50"}`}
-                {...register("email", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "Invalid email address",
-                  },
-                })}
-              />
-              {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
-            </div>
-
-            {/* Subject Field */}
-            <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="subject" className={errors.subject ? "text-red-500" : ""}>
-                Subject*
-              </Label>
-              <Input
-                id="subject"
-                placeholder="What is your inquiry about?"
-                className={`${errors.subject ? "border-red-500" : ""} ${isDark ? "bg-gray-800" : "bg-gray-50"}`}
-                {...register("subject", { required: "Subject is required" })}
-              />
-              {errors.subject && <p className="text-red-500 text-sm">{errors.subject.message}</p>}
-            </div>
-
-            {/* Message Field */}
-            <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="message" className={errors.message ? "text-red-500" : ""}>
-                Message*
-              </Label>
-              <Textarea
-                id="message"
-                placeholder="Please provide details about your inquiry..."
-                className={`min-h-[150px] ${errors.message ? "border-red-500" : ""} ${
-                  isDark ? "bg-gray-800" : "bg-gray-50"
-                }`}
-                {...register("message", { required: "Message is required" })}
-              />
-              {errors.message && <p className="text-red-500 text-sm">{errors.message.message}</p>}
-            </div>
+          
+          <div>
+            <label className={`block text-sm font-medium mb-2 ${isDark ? "text-gray-200" : "text-gray-700"}`}>
+              Email Address *
+            </label>
+            <Input
+              type="email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              required
+              className={isDark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"}
+              placeholder="john@example.com"
+            />
           </div>
+        </div>
 
-          {/* Submit Button */}
-          <div className="mt-8">
-            <Button
-              type="submit"
-              className="w-full bg-[#4a9cd6] hover:bg-[#3a8cc6] text-white py-6 text-lg"
-              disabled={isLoading}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className={`block text-sm font-medium mb-2 ${isDark ? "text-gray-200" : "text-gray-700"}`}>
+              Phone Number *
+            </label>
+            <Input
+              type="tel"
+              value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              required
+              className={isDark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"}
+              placeholder="+971 XX XXX XXXX"
+            />
+          </div>
+          
+          <div>
+            <label className={`block text-sm font-medium mb-2 ${isDark ? "text-gray-200" : "text-gray-700"}`}>
+              Enquiry Type *
+            </label>
+            <Select
+              value={formData.enquiryType}
+              onValueChange={(value) => setFormData({ ...formData, enquiryType: value })}
             >
-              {isLoading ? (
-                <div className="flex items-center">
-                  <div className="animate-spin mr-2 h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
-                  Sending...
-                </div>
-              ) : (
-                "Send Message"
-              )}
-            </Button>
+              <SelectTrigger className={isDark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"}>
+                <SelectValue placeholder="Select enquiry type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="general">General Enquiry</SelectItem>
+                <SelectItem value="sales">Sales Enquiry</SelectItem>
+                <SelectItem value="service">Service & Maintenance</SelectItem>
+                <SelectItem value="test-drive">Test Drive Request</SelectItem>
+                <SelectItem value="corporate">Corporate Sales</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
-        </motion.form>
-      )}
-    </div>
+        </div>
+
+        <div>
+          <label className={`block text-sm font-medium mb-2 ${isDark ? "text-gray-200" : "text-gray-700"}`}>
+            Subject *
+          </label>
+          <Input
+            type="text"
+            value={formData.subject}
+            onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+            required
+            className={isDark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"}
+            placeholder="Enter subject"
+          />
+        </div>
+
+        <div>
+          <label className={`block text-sm font-medium mb-2 ${isDark ? "text-gray-200" : "text-gray-700"}`}>
+            Message *
+          </label>
+          <Textarea
+            value={formData.message}
+            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+            required
+            className={`min-h-[150px] ${isDark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"}`}
+            placeholder="Enter your message here..."
+          />
+        </div>
+
+        <Button
+          type="submit"
+          className="w-full bg-[#4a9cd6] hover:bg-[#3a8cc6] text-white"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Sending..." : "Send Message"}
+        </Button>
+
+        <p className={`text-sm text-center ${isDark ? "text-gray-400" : "text-gray-500"}`}>
+          * Required fields
+        </p>
+      </div>
+    </form>
   )
 } 
