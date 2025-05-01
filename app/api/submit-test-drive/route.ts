@@ -8,7 +8,7 @@ export async function POST(request: Request) {
     console.log("Received request body:", body);
 
     // The external API endpoint - exactly as used in the working form
-    const apiEndpoint = 'https://lhgl-dev.outsystemsenterprise.com/CRM_IS/rest/RESTAPIDealerShip/RESTAPI_WEB';
+    const apiEndpoint = 'https://lhgl-tst.outsystemsenterprise.com/CRM_IS/rest/RESTAPIDealerShip/RESTAPI_WEB';
 
     try {
       // Create headers object - this is key for this API
