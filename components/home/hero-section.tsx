@@ -53,7 +53,7 @@ export function HeroSection() {
           playsInline
           poster="https://res.cloudinary.com/dckrspiqe/image/upload/v1745844235/hero-poster_usdzyq.jpg"
         >
-          <source src="https://res.cloudinary.com/dckrspiqe/video/upload/v1745844235/hero-background_usdzyq.mp4" type="video/mp4" />
+          <source src="https://res.cloudinary.com/dckrspiqe/video/upload/v1746688055/WEBSITE-VIDEO_jlh7i3.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </motion.div>

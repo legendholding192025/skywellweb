@@ -11,6 +11,19 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { ThemeToggle } from "./theme-toggle"
 import { useTheme } from "next-themes"
 
+interface SubMenuItem {
+  name: string
+  href: string
+  image?: string
+  description: string
+}
+
+interface NavigationItem {
+  name: string
+  href: string
+  submenu?: SubMenuItem[]
+}
+
 export function Navbar() {
   const pathname = usePathname()
   const router = useRouter()
@@ -25,10 +38,36 @@ export function Navbar() {
   const [isDark, setIsDark] = useState<boolean | null>(null)
   const [isMounted, setIsMounted] = useState(false)
 
-  const navigation = [
-    { name: "Models", href: "/models" },
-    { name: "Features", href: "/features" },
-    { name: "Charging", href: "/charging" },
+  const navigation: NavigationItem[] = [
+    { 
+      name: "Models", 
+      href: "/models", 
+      submenu: [
+        { 
+          name: "ET5", 
+          href: "/models/et5",
+          image: "https://res.cloudinary.com/dckrspiqe/image/upload/v1745837231/skywell_img-car-km-01_waz8sk.png",
+          description: "Premium Electric SUV"
+        }
+      ]
+    },
+    
+    { 
+      name: "Finance & Offers", 
+      href: "/finance",
+      submenu: [
+        {
+          name: "Finance Calculator",
+          href: "/finance/calculator",
+          description: "Estimate your monthly payments"
+        },
+        {
+          name: "Special Offers",
+          href: "/finance/offers",
+          description: "View current deals and promotions"
+        }
+      ]
+    },
     { name: "Blogs", href: "/blogs" },
     { name: "Support", href: "/support" },
     { name: "Contact Us", href: "/contact-us" },
@@ -157,7 +196,7 @@ export function Navbar() {
           {/* Desktop Navigation with hover effects */}
           <div className="hidden md:block">
             <div className="relative flex items-center space-x-1">
-              {/* Hover Highlight - with explicit opacity in style */}
+              {/* Hover Highlight */}
               <div
                 className={`absolute h-[30px] transition-all duration-300 ease-out ${
                   isDark ? "bg-[rgba(74,156,214,0.2)]" : "bg-[rgba(74,156,214,0.1)]"
@@ -187,60 +226,68 @@ export function Navbar() {
                   }`}
                   onMouseEnter={() => setHoveredIndex(index)}
                   onMouseLeave={() => setHoveredIndex(null)}
-                  onClick={() => {
-                    setActiveIndex(index)
-                    router.push(item.href)
-                  }}
                 >
-                  <div className="text-sm font-medium whitespace-nowrap flex items-center justify-center h-full">
-                    {item.name}
-                  </div>
+                  {item.submenu ? (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <div className="text-sm font-medium whitespace-nowrap flex items-center justify-center h-full">
+                          {item.name} <ChevronDown className="ml-1 h-3 w-3" />
+                        </div>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent
+                        align="start"
+                        sideOffset={20}
+                        className={`w-[300px] p-2 ${
+                          isDark
+                            ? "bg-black/95 backdrop-blur-xl border border-neutral-800 text-white"
+                            : "bg-white/95 backdrop-blur-xl border border-neutral-100 text-black"
+                        } rounded-xl shadow-lg animate-in fade-in-0 zoom-in-95`}
+                      >
+                        {item.submenu.map((subItem, subIndex) => (
+                          <DropdownMenuItem
+                            key={`submenu-${subIndex}`}
+                            className={`flex items-center gap-4 px-3 py-2.5 rounded-lg cursor-pointer transition-colors ${
+                              isDark 
+                                ? "hover:bg-white/10 focus:bg-white/10" 
+                                : "hover:bg-black/5 focus:bg-black/5"
+                            }`}
+                            onClick={() => router.push(subItem.href)}
+                          >
+                            {subItem.image && (
+                              <div className="flex-shrink-0 relative w-[60px] h-[60px] rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
+                                <Image 
+                                  src={subItem.image}
+                                  alt={subItem.name}
+                                  width={60}
+                                  height={60}
+                                  className="object-contain w-full h-full"
+                                  sizes="60px"
+                                />
+                              </div>
+                            )}
+                            <div className="flex-1 min-w-0">
+                              <div className="font-medium truncate">{subItem.name}</div>
+                              <div className={`text-sm truncate ${isDark ? "text-neutral-400" : "text-neutral-500"}`}>
+                                {subItem.description}
+                              </div>
+                            </div>
+                          </DropdownMenuItem>
+                        ))}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  ) : (
+                    <div
+                      className="text-sm font-medium whitespace-nowrap flex items-center justify-center h-full"
+                      onClick={() => {
+                        setActiveIndex(index)
+                        router.push(item.href)
+                      }}
+                    >
+                      {item.name}
+                    </div>
+                  )}
                 </div>
               ))}
-
-              {/* Shop Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <div
-                    ref={(el: HTMLDivElement | null) => {
-                      tabRefs.current[navigation.length] = el
-                    }}
-                    className={`px-3 py-2 cursor-pointer transition-colors duration-300 h-[30px] ${
-                      isDark ? "text-white opacity-80 hover:opacity-100" : "text-black opacity-80 hover:opacity-100"
-                    }`}
-                    onMouseEnter={() => setHoveredIndex(navigation.length)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                  >
-                    <div className="text-sm font-medium whitespace-nowrap flex items-center justify-center h-full">
-                      Shop <ChevronDown className="ml-1 h-3 w-3" />
-                    </div>
-                  </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  align="end"
-                  className={`${
-                    isDark
-                      ? "bg-black/90 backdrop-blur-lg border-neutral-800 text-white"
-                      : "bg-white/90 backdrop-blur-lg border-neutral-200 text-black"
-                  }`}
-                >
-                  <DropdownMenuItem className={`focus:bg-[rgba(74,156,214,0.2)]`}>
-                    <Link href="/shop/ev-models" className="w-full">
-                      EV Models
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className={`focus:bg-[rgba(74,156,214,0.2)]`}>
-                    <Link href="/shop/accessories" className="w-full">
-                      Accessories
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className={`focus:bg-[rgba(74,156,214,0.2)]`}>
-                    <Link href="/shop/charging" className="w-full">
-                      Charging Solutions
-                    </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
             </div>
           </div>
 
@@ -321,28 +368,48 @@ export function Navbar() {
                   </div>
                   <div className="flex flex-col space-y-6 mt-8">
                     {navigation.map((item) => (
-                      <Link
-                        key={`mobile-${item.name}`}
-                        href={item.href}
-                        className={`text-lg font-medium ${
-                          pathname === item.href
-                            ? "text-[#4a9cd6]"
-                            : isDark
-                              ? "text-white opacity-80 hover:opacity-100"
-                              : "text-black opacity-80 hover:opacity-100"
-                        }`}
-                      >
-                        {item.name}
-                      </Link>
+                      <div key={`mobile-${item.name}`}>
+                        {item.submenu ? (
+                          <div className="space-y-3">
+                            <div className={`text-lg font-medium ${
+                              isDark ? "text-white opacity-80" : "text-black opacity-80"
+                            }`}>
+                              {item.name}
+                            </div>
+                            <div className="pl-4 space-y-2">
+                              {item.submenu.map((subItem) => (
+                                <Link
+                                  key={subItem.href}
+                                  href={subItem.href}
+                                  className={`block text-base ${
+                                    pathname === subItem.href
+                                      ? "text-[#4a9cd6]"
+                                      : isDark
+                                        ? "text-white/70 hover:text-white"
+                                        : "text-black/70 hover:text-black"
+                                  }`}
+                                >
+                                  {subItem.name}
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        ) : (
+                          <Link
+                            href={item.href}
+                            className={`text-lg font-medium ${
+                              pathname === item.href
+                                ? "text-[#4a9cd6]"
+                                : isDark
+                                  ? "text-white opacity-80 hover:opacity-100"
+                                  : "text-black opacity-80 hover:opacity-100"
+                            }`}
+                          >
+                            {item.name}
+                          </Link>
+                        )}
+                      </div>
                     ))}
-                    <Link
-                      href="/shop"
-                      className={`text-lg font-medium ${
-                        isDark ? "text-white opacity-80 hover:opacity-100" : "text-black opacity-80 hover:opacity-100"
-                      }`}
-                    >
-                      Shop
-                    </Link>
                     <Link
                       href="/get-quote"
                       className={`text-lg font-medium ${
