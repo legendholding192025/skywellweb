@@ -2,6 +2,9 @@ import { cookies } from 'next/headers';
 import { verify } from 'jsonwebtoken';
 import connectDB from './mongodb';
 import Admin from '@/models/Admin';
+import jwt from 'jsonwebtoken';
+
+const JWT_SECRET = process.env.JWT_SECRET!;
 
 export async function verifyAuth(req: Request) {
   try {
@@ -50,4 +53,22 @@ export async function verifyAuth(req: Request) {
     console.error('Auth verification error:', error);
     return null;
   }
+}
+
+export async function verifyToken(token: string): Promise<boolean> {
+  try {
+    jwt.verify(token, JWT_SECRET);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+export async function getToken(): Promise<string | null> {
+  const cookieStore = cookies();
+  return cookieStore.get('admin_token')?.value || null;
+}
+
+export function generateToken(payload: any): string {
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' });
 } 

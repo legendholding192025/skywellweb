@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+import { ThemeProvider } from "next-themes"
 
 import { useState, useEffect } from "react"
 import { useRouter, usePathname } from "next/navigation"
@@ -67,5 +68,9 @@ export default function AdminRootLayout({
 }: {
   children: React.ReactNode
 }) {
-  return children
+  return (
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} forcedTheme="light">
+      {children}
+    </ThemeProvider>
+  )
 }

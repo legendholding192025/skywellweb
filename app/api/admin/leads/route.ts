@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import connectDB from '@/lib/mongodb';
@@ -10,10 +12,15 @@ export async function GET(req: Request) {
   try {
     const headersList = headers();
     const authHeader = headersList.get('authorization');
+    const { searchParams } = new URL(req.url);
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '10');
+    const skip = (page - 1) * limit;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      console.error('Authentication header missing or invalid');
       return NextResponse.json(
-        { message: 'Unauthorized' },
+        { message: 'Unauthorized - Invalid header' },
         { status: 401 }
       );
     }
@@ -23,23 +30,47 @@ export async function GET(req: Request) {
     try {
       jwt.verify(token, JWT_SECRET);
     } catch (error) {
+      console.error('JWT verification failed:', error);
       return NextResponse.json(
-        { message: 'Invalid token' },
+        { message: 'Invalid or expired token' },
         { status: 401 }
       );
     }
 
-    await connectDB();
+    try {
+      await connectDB();
+    } catch (error) {
+      console.error('MongoDB connection failed:', error);
+      return NextResponse.json(
+        { message: 'Database connection failed' },
+        { status: 500 }
+      );
+    }
     
-    const leads = await ServiceBooking.find()
-      .sort({ createdAt: -1 })
-      .limit(100);
+    const [bookings, total] = await Promise.all([
+      ServiceBooking.find()
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit),
+      ServiceBooking.countDocuments()
+    ]);
     
-    return NextResponse.json(leads);
+    if (!bookings || bookings.length === 0) {
+      console.log('No service bookings found in database');
+    } else {
+      console.log(`Found ${bookings.length} service bookings, page ${page} of ${Math.ceil(total/limit)}`);
+    }
+    
+    return NextResponse.json({
+      bookings,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit)
+    });
   } catch (error) {
-    console.error('Error fetching leads:', error);
+    console.error('Error in service bookings API:', error);
     return NextResponse.json(
-      { message: 'Error fetching leads' },
+      { message: 'Error fetching service bookings: ' + (error as Error).message },
       { status: 500 }
     );
   }

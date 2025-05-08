@@ -12,7 +12,10 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import AdminLayout from '@/components/admin/AdminLayout'
+import { ExportButton } from "@/components/admin/ExportButton"
 
 interface NewsletterSubscription {
   _id: string
@@ -29,27 +32,61 @@ export default function NewsletterSubscriptionsPage() {
   const [subscriptions, setSubscriptions] = useState<NewsletterSubscription[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const [totalSubscriptions, setTotalSubscriptions] = useState(0)
+  const itemsPerPage = 10
 
   useEffect(() => {
-    const fetchSubscriptions = async () => {
-      try {
-        const response = await fetch('/api/newsletter')
-        const data = await response.json()
-
-        if (!data.success) {
-          throw new Error(data.message || 'Failed to fetch subscriptions')
-        }
-
-        setSubscriptions(data.data)
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch subscriptions')
-      } finally {
-        setLoading(false)
-      }
-    }
-
     fetchSubscriptions()
-  }, [])
+  }, [currentPage])
+
+  const fetchSubscriptions = async () => {
+    try {
+      const response = await fetch(`/api/newsletter?page=${currentPage}&limit=${itemsPerPage}`)
+      const data = await response.json()
+
+      if (!data.success) {
+        throw new Error(data.message || 'Failed to fetch subscriptions')
+      }
+
+      setSubscriptions(data.data)
+      setTotalPages(Math.ceil(data.total / itemsPerPage))
+      setTotalSubscriptions(data.total)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch subscriptions')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage)
+  }
+
+  const getAllSubscriptions = async () => {
+    try {
+      const response = await fetch(`/api/newsletter?limit=1000`)
+      const data = await response.json()
+
+      if (!data.success) {
+        throw new Error(data.message || 'Failed to fetch subscriptions')
+      }
+      
+      // Format data for Excel
+      return data.data.map((subscription: NewsletterSubscription, index: number) => ({
+        'S.N.': index + 1,
+        'Email': subscription.email,
+        'Status': subscription.status,
+        'Subscription Date': new Date(subscription.subscriptionDate).toLocaleDateString(),
+        'Last Email Sent': subscription.lastEmailSent ? new Date(subscription.lastEmailSent).toLocaleDateString() : 'Never',
+        'Emails Sent': subscription.emailsSent,
+      }))
+    } catch (error) {
+      console.error('Failed to fetch subscriptions:', error)
+      throw error
+    }
+  }
 
   if (loading) {
     return (
@@ -79,8 +116,9 @@ export default function NewsletterSubscriptionsPage() {
             Newsletter Subscriptions
           </h1>
           <div className="flex items-center space-x-4">
+            <ExportButton getData={getAllSubscriptions} filename="newsletter-subscriptions" />
             <Badge variant="outline">
-              Total: {subscriptions.length}
+              Total: {totalSubscriptions}
             </Badge>
             <Badge variant="outline" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100">
               Active: {subscriptions.filter(sub => sub.status === 'active').length}
@@ -92,6 +130,7 @@ export default function NewsletterSubscriptionsPage() {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead className="w-[50px]">S.N.</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Subscription Date</TableHead>
@@ -100,8 +139,11 @@ export default function NewsletterSubscriptionsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {subscriptions.map((subscription) => (
+              {subscriptions.map((subscription, index) => (
                 <TableRow key={subscription._id}>
+                  <TableCell className="font-medium">
+                    {(currentPage - 1) * itemsPerPage + index + 1}
+                  </TableCell>
                   <TableCell className="font-medium">{subscription.email}</TableCell>
                   <TableCell>
                     <Badge
@@ -128,6 +170,43 @@ export default function NewsletterSubscriptionsPage() {
               ))}
             </TableBody>
           </Table>
+
+          {/* Pagination */}
+          <div className="flex items-center justify-between border-t px-6 py-4">
+            <p className="text-sm text-gray-500">
+              Showing {subscriptions.length} of {totalSubscriptions} entries
+            </p>
+            <div className="flex items-center space-x-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                <ChevronLeft className="h-4 w-4 mr-1" />
+                Previous
+              </Button>
+              {[...Array(totalPages)].map((_, i) => (
+                <Button
+                  key={i + 1}
+                  variant={currentPage === i + 1 ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => handlePageChange(i + 1)}
+                >
+                  {i + 1}
+                </Button>
+              ))}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                Next
+                <ChevronRight className="h-4 w-4 ml-1" />
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
     </AdminLayout>

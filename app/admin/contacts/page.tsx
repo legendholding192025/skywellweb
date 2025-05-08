@@ -7,10 +7,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import Cookies from "js-cookie"
-import { Phone, Mail, Clock, AlertCircle, Filter, RefreshCw } from "lucide-react"
+import { Phone, Mail, Clock, AlertCircle, Filter, RefreshCw, ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import AdminLayout from '@/components/admin/AdminLayout'
+import { ExportButton } from "@/components/admin/ExportButton"
 
 interface Contact {
   _id: string
@@ -29,11 +30,14 @@ export default function ContactsPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [refreshing, setRefreshing] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const itemsPerPage = 10
   const router = useRouter()
 
   useEffect(() => {
     fetchContacts()
-  }, [])
+  }, [currentPage])
 
   const fetchContacts = async () => {
     try {
@@ -45,7 +49,7 @@ export default function ContactsPage() {
         return
       }
 
-      const response = await fetch("/api/contact", {
+      const response = await fetch(`/api/contact?page=${currentPage}&limit=${itemsPerPage}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -61,7 +65,8 @@ export default function ContactsPage() {
       }
 
       const data = await response.json()
-      setContacts(data)
+      setContacts(data.contacts)
+      setTotalPages(Math.ceil(data.total / itemsPerPage))
     } catch (err) {
       setError("Failed to load contacts")
       console.error(err)
@@ -69,6 +74,10 @@ export default function ContactsPage() {
       setLoading(false)
       setRefreshing(false)
     }
+  }
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage)
   }
 
   const getStatusBadge = (status: string) => {
@@ -95,6 +104,43 @@ export default function ContactsPage() {
       day: "numeric",
       year: "numeric",
     }).format(date)
+  }
+
+  const getAllContacts = async () => {
+    try {
+      const token = Cookies.get("admin_token")
+      if (!token) {
+        throw new Error("Not authenticated")
+      }
+
+      const res = await fetch("/api/contact?limit=1000", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch contacts")
+      }
+
+      const data = await res.json()
+      
+      // Format data for Excel
+      return data.contacts.map((contact: Contact, index: number) => ({
+        'S.N.': index + 1,
+        'Name': contact.name,
+        'Email': contact.email,
+        'Phone': contact.phone,
+        'Subject': contact.subject,
+        'Message': contact.message,
+        'Enquiry Type': contact.enquiryType,
+        'Status': contact.status,
+        'Submitted On': new Date(contact.createdAt).toLocaleDateString(),
+      }))
+    } catch (error) {
+      console.error('Failed to fetch contacts:', error)
+      throw error
+    }
   }
 
   if (loading) {
@@ -204,88 +250,94 @@ export default function ContactsPage() {
           </CardContent>
         </Card>
 
-        <Card className="border border-gray-100 shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
+        <Card className="border border-gray-100 shadow-sm">
+          <CardContent className="p-0">
             <Table>
-              <TableHeader className="bg-gray-50">
-                <TableRow className="hover:bg-gray-50/80">
-                  <TableHead className="w-[120px] font-medium">Date</TableHead>
-                  <TableHead className="font-medium">Name</TableHead>
-                  <TableHead className="font-medium">Contact</TableHead>
-                  <TableHead className="font-medium">Type</TableHead>
-                  <TableHead className="font-medium">Subject</TableHead>
-                  <TableHead className="font-medium">Message</TableHead>
-                  <TableHead className="font-medium">Status</TableHead>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[50px]">S.N.</TableHead>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Contact Info</TableHead>
+                  <TableHead>Subject</TableHead>
+                  <TableHead>Enquiry Type</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Submitted</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {contacts.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={7} className="h-32 text-center">
-                      <div className="flex flex-col items-center justify-center text-gray-500">
-                        <Mail className="h-8 w-8 mb-2 text-gray-400" />
-                        <p>No contact submissions yet</p>
+                {contacts.map((contact, index) => (
+                  <TableRow key={contact._id}>
+                    <TableCell className="font-medium">
+                      {(currentPage - 1) * itemsPerPage + index + 1}
+                    </TableCell>
+                    <TableCell>{contact.name}</TableCell>
+                    <TableCell>
+                      <div className="space-y-1">
+                        <div className="flex items-center text-sm">
+                          <Mail className="h-4 w-4 mr-1.5 text-gray-500" />
+                          {contact.email}
+                        </div>
+                        <div className="flex items-center text-sm text-gray-500">
+                          <Phone className="h-4 w-4 mr-1.5" />
+                          {contact.phone}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>{contact.subject}</TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className="capitalize">
+                        {contact.enquiryType}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>{getStatusBadge(contact.status)}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center text-sm text-gray-500">
+                        <Clock className="h-4 w-4 mr-1.5" />
+                        {formatDate(contact.createdAt)}
                       </div>
                     </TableCell>
                   </TableRow>
-                ) : (
-                  contacts.map((contact) => (
-                    <TableRow
-                      key={contact._id}
-                      className="hover:bg-blue-50/50 transition-colors cursor-pointer border-b border-gray-100"
-                    >
-                      <TableCell className="whitespace-nowrap font-medium text-gray-600">
-                        {formatDate(contact.createdAt)}
-                      </TableCell>
-                      <TableCell className="font-medium">{contact.name}</TableCell>
-                      <TableCell>
-                        <div className="flex flex-col">
-                          <div className="flex items-center text-sm text-gray-700">
-                            <Mail className="h-3.5 w-3.5 mr-1.5 text-gray-500" />
-                            {contact.email}
-                          </div>
-                          <div className="flex items-center text-sm text-gray-600 mt-1">
-                            <Phone className="h-3.5 w-3.5 mr-1.5 text-gray-500" />
-                            {contact.phone}
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="outline" className="capitalize bg-gray-50 text-gray-700 font-medium">
-                          {contact.enquiryType}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <div className="max-w-[180px] truncate text-gray-700">{contact.subject}</div>
-                            </TooltipTrigger>
-                            <TooltipContent className="max-w-sm">
-                              <p>{contact.subject}</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      </TableCell>
-                      <TableCell>
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <div className="max-w-[180px] truncate text-gray-700">{contact.message}</div>
-                            </TooltipTrigger>
-                            <TooltipContent className="max-w-sm">
-                              <p>{contact.message}</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      </TableCell>
-                      <TableCell>{getStatusBadge(contact.status)}</TableCell>
-                    </TableRow>
-                  ))
-                )}
+                ))}
               </TableBody>
             </Table>
-          </div>
+
+            {/* Pagination */}
+            <div className="flex items-center justify-between border-t px-6 py-4">
+              <p className="text-sm text-gray-500">
+                Showing {contacts.length} of {totalPages * itemsPerPage} entries
+              </p>
+              <div className="flex items-center space-x-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  <ChevronLeft className="h-4 w-4 mr-1" />
+                  Previous
+                </Button>
+                {[...Array(totalPages)].map((_, i) => (
+                  <Button
+                    key={i + 1}
+                    variant={currentPage === i + 1 ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => handlePageChange(i + 1)}
+                  >
+                    {i + 1}
+                  </Button>
+                ))}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                  <ChevronRight className="h-4 w-4 ml-1" />
+                </Button>
+              </div>
+            </div>
+          </CardContent>
         </Card>
       </div>
     </AdminLayout>

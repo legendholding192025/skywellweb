@@ -16,7 +16,7 @@ export default function ET5Page() {
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: "url('https://res.cloudinary.com/dckrspiqe/image/upload/v1745844359/et5-hero.jpg')",
+            backgroundImage: "url('https://res.cloudinary.com/dckrspiqe/image/upload/v1745837284/Skywell-et5-lr-17_result_qxmiq7.jpg')",
           }}
         >
           <div className="absolute inset-0 bg-black/30" />

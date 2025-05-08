@@ -18,6 +18,7 @@ import {
   ChevronRight,
   Bell,
   Wrench,
+  Gift,
 } from "lucide-react"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -58,6 +59,11 @@ const navItems = [
     title: "Blog Posts",
     href: "/admin/blogs",
     icon: FileText,
+  },
+  {
+    title: "Offers",
+    href: "/admin/offers",
+    icon: Gift,
   },
 ]
 
@@ -112,20 +118,20 @@ export default function AdminLayout({
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="flex items-center justify-center min-h-screen bg-white">
         <div className="flex flex-col items-center">
           <div className="relative w-16 h-16">
             <div className="absolute top-0 left-0 w-full h-full rounded-full border-4 border-t-blue-500 border-r-transparent border-b-blue-300 border-l-transparent animate-spin"></div>
             <div className="absolute top-2 left-2 w-12 h-12 rounded-full border-4 border-t-transparent border-r-blue-400 border-b-transparent border-l-blue-400 animate-spin animation-delay-150"></div>
           </div>
-          <p className="mt-4 text-blue-600 font-medium">Loading admin panel...</p>
+          <p className="mt-4 text-gray-600 font-medium">Loading admin panel...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50/80">
+    <div className="min-h-screen bg-gray-50">
       {/* Overlay for mobile */}
       {isSidebarOpen && isMobile && (
         <div
@@ -136,7 +142,7 @@ export default function AdminLayout({
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-full bg-white shadow-xl transition-all duration-300 ease-in-out z-50 
+        className={`fixed top-0 left-0 h-full bg-white border-r border-gray-200 transition-all duration-300 ease-in-out z-50 
         ${isSidebarOpen ? "w-72" : "w-0 -translate-x-full lg:translate-x-0 lg:w-20"}`}
       >
         <div
@@ -144,10 +150,10 @@ export default function AdminLayout({
         >
           {(isSidebarOpen || isMobile) && (
             <div className="flex items-center space-x-2">
-              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold">
+              <div className="h-8 w-8 rounded-lg bg-blue-500 flex items-center justify-center text-white font-bold">
                 S
               </div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
+              <h1 className="text-xl font-bold text-gray-900">
                 Skywell Admin
               </h1>
             </div>
@@ -172,15 +178,15 @@ export default function AdminLayout({
                         <TooltipTrigger asChild>
                           <Link
                             href={item.href}
-                            className={`flex items-center ${!isSidebarOpen && !isMobile ? "justify-center" : "justify-between"} px-4 py-3 rounded-xl transition-all duration-200
+                            className={`flex items-center ${!isSidebarOpen && !isMobile ? "justify-center" : "justify-between"} px-4 py-3 rounded-lg transition-all duration-200
                             ${
                               isActive
-                                ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-md shadow-blue-200"
-                                : "text-gray-700 hover:bg-blue-50"
+                                ? "bg-blue-50 text-blue-600"
+                                : "text-gray-600 hover:bg-gray-50"
                             }`}
                           >
                             <div className="flex items-center space-x-3">
-                              <item.icon className={`h-5 w-5 ${isActive ? "text-white" : "text-blue-500"}`} />
+                              <item.icon className={`h-5 w-5 ${isActive ? "text-blue-600" : "text-gray-400"}`} />
                               {(isSidebarOpen || isMobile) && <span className="font-medium">{item.title}</span>}
                             </div>
                             {(isSidebarOpen || isMobile) && isActive && <ChevronRight className="h-4 w-4" />}
@@ -206,7 +212,7 @@ export default function AdminLayout({
               <TooltipTrigger asChild>
                 <button
                   onClick={handleLogout}
-                  className={`flex items-center ${!isSidebarOpen && !isMobile ? "justify-center" : "justify-between"} w-full px-4 py-3 rounded-xl hover:bg-red-50 text-red-600 hover:text-red-700 transition-colors duration-200`}
+                  className={`flex items-center ${!isSidebarOpen && !isMobile ? "justify-center" : "justify-between"} w-full px-4 py-3 rounded-lg hover:bg-red-50 text-red-600 transition-colors duration-200`}
                 >
                   <div className="flex items-center space-x-3">
                     <LogOut className="h-5 w-5" />
@@ -226,8 +232,8 @@ export default function AdminLayout({
       </div>
 
       {/* Main Content */}
-      <div className={`${isSidebarOpen ? "lg:ml-72" : "lg:ml-20"} transition-all duration-300`}>
-        <header className="bg-white shadow-sm sticky top-0 z-30">
+      <div className={`${isSidebarOpen ? "lg:pl-72" : "lg:pl-20"}`}>
+        <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
           <div className="flex items-center justify-between px-6 py-4">
             <div className="flex items-center space-x-4">
               <button
@@ -248,8 +254,8 @@ export default function AdminLayout({
               </Button>
 
               <div className="flex items-center space-x-3">
-                <Avatar className="h-9 w-9 border-2 border-blue-100">
-                  <AvatarFallback className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">A</AvatarFallback>
+                <Avatar className="h-9 w-9 border border-gray-200">
+                  <AvatarFallback className="bg-blue-500 text-white">A</AvatarFallback>
                 </Avatar>
                 <div className="hidden md:block">
                   <p className="text-sm font-medium text-gray-800">Admin User</p>

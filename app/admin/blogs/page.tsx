@@ -329,23 +329,33 @@ export default function BlogsPage() {
               <Table>
                 <TableHeader className="bg-gray-50">
                   <TableRow className="hover:bg-gray-50/80">
-                    <TableHead className="font-medium w-[40%]">
-                      <button className="flex items-center font-medium" onClick={() => handleSort("title")}>
-                        Title {renderSortIcon("title")}
-                      </button>
+                    <TableHead className="w-[50px]">S.N.</TableHead>
+                    <TableHead onClick={() => handleSort("title")} className="cursor-pointer">
+                      <div className="flex items-center">
+                        Title
+                        {renderSortIcon("title")}
+                      </div>
                     </TableHead>
-                    <TableHead className="font-medium">Status</TableHead>
-                    <TableHead className="font-medium">
-                      <button className="flex items-center font-medium" onClick={() => handleSort("publishedAt")}>
-                        Published {renderSortIcon("publishedAt")}
-                      </button>
+                    <TableHead>Status</TableHead>
+                    <TableHead
+                      onClick={() => handleSort("publishedAt")}
+                      className="cursor-pointer"
+                    >
+                      <div className="flex items-center">
+                        Published
+                        {renderSortIcon("publishedAt")}
+                      </div>
                     </TableHead>
-                    <TableHead className="font-medium">
-                      <button className="flex items-center font-medium" onClick={() => handleSort("updatedAt")}>
-                        Last Updated {renderSortIcon("updatedAt")}
-                      </button>
+                    <TableHead
+                      onClick={() => handleSort("updatedAt")}
+                      className="cursor-pointer"
+                    >
+                      <div className="flex items-center">
+                        Last Updated
+                        {renderSortIcon("updatedAt")}
+                      </div>
                     </TableHead>
-                    <TableHead className="w-[80px] text-right">Actions</TableHead>
+                    <TableHead className="w-[100px]">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -363,24 +373,18 @@ export default function BlogsPage() {
                       </TableCell>
                     </TableRow>
                   ) : (
-                    paginatedBlogs.map((blog) => (
+                    paginatedBlogs.map((blog, index) => (
                       <TableRow
                         key={blog._id}
                         className="hover:bg-blue-50/50 transition-colors border-b border-gray-100"
                       >
                         <TableCell className="font-medium">
+                          {(currentPage - 1) * itemsPerPage + index + 1}
+                        </TableCell>
+                        <TableCell>
                           <div className="flex items-center">
-                            <div className="mr-2">
-                              {blog.status === "published" ? (
-                                <FileText className="h-4 w-4 text-emerald-500" />
-                              ) : (
-                                <FileEdit className="h-4 w-4 text-amber-500" />
-                              )}
-                            </div>
-                            <div>
-                              <div className="font-medium text-gray-900">{blog.title}</div>
-                              <div className="text-xs text-gray-500 mt-0.5">/blog/{blog.slug}</div>
-                            </div>
+                            <FileText className="h-4 w-4 mr-2 text-gray-400" />
+                            {blog.title}
                           </div>
                         </TableCell>
                         <TableCell>{getStatusBadge(blog.status)}</TableCell>

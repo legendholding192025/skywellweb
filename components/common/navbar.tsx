@@ -51,7 +51,27 @@ export function Navbar() {
         }
       ]
     },
-    
+    { 
+      name: "After Sales",
+      href: "/after-sales",
+      submenu: [
+        {
+          name: "Service Center",
+          href: "/services",
+          description: "Schedule your vehicle service"
+        },
+        {
+          name: "Warranty",
+          href: "/after-sales/warranty",
+          description: "Learn about our warranty coverage"
+        },
+        {
+          name: "Support",
+          href: "/after-sales/support",
+          description: "Get help and assistance"
+        }
+      ]
+    },
     { 
       name: "Finance & Offers", 
       href: "/finance",
@@ -69,7 +89,6 @@ export function Navbar() {
       ]
     },
     { name: "Blogs", href: "/blogs" },
-    { name: "Support", href: "/support" },
     { name: "Contact Us", href: "/contact-us" },
   ]
 

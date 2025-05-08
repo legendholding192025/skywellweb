@@ -77,7 +77,7 @@ export function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.5 }}
             >
-              Skywell ET5
+              SKYWELL
             </motion.h1>
 
             <motion.p
@@ -86,7 +86,7 @@ export function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.7 }}
             >
-              Drive the <span className="text-[#4a9cd6]">Electric</span> Revolution
+              Brought to you by <span className="text-[#4a9cd6]">Legend Motors</span>
             </motion.p>
 
             <motion.p
@@ -95,7 +95,7 @@ export function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.9 }}
             >
-              Experience the next generation of sustainable transportation with Skywell's innovative electric vehicles.
+              Experience the next generation of sustainable transportation, with Skywell ET5.
             </motion.p>
 
             <motion.div
@@ -115,7 +115,7 @@ export function HeroSection() {
                 <div className="absolute inset-0 bg-[#4a9cd6] rounded-md blur-md opacity-50 group-hover:opacity-75 transition-all duration-300"></div>
                 <button className="relative w-full sm:w-auto bg-gradient-to-r from-[#4a9cd6] to-[#3a8cc6] text-white font-medium px-6 py-3 sm:py-2.5 rounded-md text-base sm:text-sm shadow-lg flex items-center justify-center overflow-hidden group z-10">
                   <span className="relative z-10 flex items-center">
-                    Explore Models
+                    Explore ET5
                     <motion.div animate={{ x: isPrimaryHovered ? 5 : 0 }} transition={{ duration: 0.3 }}>
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </motion.div>

@@ -12,9 +12,18 @@ export async function GET(req: Request) {
     const tag = searchParams.get('tag');
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');
+    const isPublic = searchParams.get('public') === 'true';
 
     const query: any = {};
-    if (status) query.status = status;
+    
+    // For public access, only show published posts
+    if (isPublic) {
+      query.status = 'published';
+    } else {
+      // For admin access, filter by status if provided
+      if (status) query.status = status;
+    }
+    
     if (tag) query.tags = tag;
 
     const skip = (page - 1) * limit;

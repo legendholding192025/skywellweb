@@ -11,6 +11,7 @@ import { Car, Clock, AlertCircle, Filter, RefreshCw } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import AdminLayout from '@/components/admin/AdminLayout'
+import { ExportButton } from "@/components/admin/ExportButton"
 
 interface TestDrive {
   _id: string
@@ -34,11 +35,14 @@ export default function TestDriveRequests() {
   const [testDrives, setTestDrives] = useState<TestDrive[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState("")
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const itemsPerPage = 10
   const router = useRouter()
 
   useEffect(() => {
     fetchTestDrives()
-  }, [])
+  }, [currentPage])
 
   const fetchTestDrives = async () => {
     try {
@@ -48,7 +52,7 @@ export default function TestDriveRequests() {
         return
       }
 
-      const res = await fetch("/api/admin/test-drive", {
+      const res = await fetch(`/api/admin/test-drive?page=${currentPage}&limit=${itemsPerPage}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -59,7 +63,8 @@ export default function TestDriveRequests() {
       }
 
       const data = await res.json()
-      setTestDrives(data)
+      setTestDrives(data.testDrives)
+      setTotalPages(Math.ceil(data.total / itemsPerPage))
       setError("")
     } catch (err) {
       setError("Failed to load test drive requests")
@@ -75,6 +80,52 @@ export default function TestDriveRequests() {
       month: "long",
       day: "numeric",
     })
+  }
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage)
+  }
+
+  const getAllTestDrives = async () => {
+    try {
+      const token = Cookies.get("admin_token")
+      if (!token) {
+        throw new Error("Not authenticated")
+      }
+
+      const res = await fetch("/api/admin/test-drive?limit=1000", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch test drives")
+      }
+
+      const data = await res.json()
+      
+      // Format data for Excel
+      return data.testDrives.map((testDrive: TestDrive, index: number) => ({
+        'S.N.': index + 1,
+        'Name': testDrive.name,
+        'Email': testDrive.email,
+        'Phone': testDrive.phone,
+        'Vehicle Model': testDrive.model,
+        'Location': testDrive.location === "dubai" ? "Dubai" : "Abu Dhabi",
+        'Preferred Date': new Date(testDrive.preferredDate).toLocaleDateString(),
+        'Preferred Time': testDrive.preferredTime,
+        'Additional Info': testDrive.additionalInfo,
+        'Campaign': testDrive.campaignName || 'Direct',
+        'Source': testDrive.utmSource || 'Direct',
+        'Medium': testDrive.utmMedium || 'None',
+        'Campaign Name': testDrive.utmCampaign || 'None',
+        'Submitted On': new Date(testDrive.createdAt).toLocaleDateString(),
+      }))
+    } catch (error) {
+      console.error('Failed to fetch test drives:', error)
+      throw error
+    }
   }
 
   if (isLoading) {
@@ -111,9 +162,12 @@ export default function TestDriveRequests() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold text-gray-800">Test Drive Requests</h1>
-          <Button onClick={fetchTestDrives} variant="outline" size="icon">
-            <RefreshCw className="h-4 w-4" />
-          </Button>
+          <div className="flex items-center space-x-3">
+            <ExportButton getData={getAllTestDrives} filename="test-drive-requests" />
+            <Button onClick={fetchTestDrives} variant="outline" size="icon">
+              <RefreshCw className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
 
         <Card>
@@ -131,6 +185,7 @@ export default function TestDriveRequests() {
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead className="w-[50px]">S.N.</TableHead>
                   <TableHead>Customer</TableHead>
                   <TableHead>Vehicle Model</TableHead>
                   <TableHead>Location</TableHead>
@@ -141,8 +196,11 @@ export default function TestDriveRequests() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {testDrives.map((testDrive) => (
+                {testDrives.map((testDrive, index) => (
                   <TableRow key={testDrive._id}>
+                    <TableCell className="font-medium">
+                      {(currentPage - 1) * itemsPerPage + index + 1}
+                    </TableCell>
                     <TableCell>
                       <div>
                         <p className="font-medium">{testDrive.name}</p>
@@ -202,6 +260,41 @@ export default function TestDriveRequests() {
                 ))}
               </TableBody>
             </Table>
+
+            {/* Pagination */}
+            <div className="mt-4 flex items-center justify-between">
+              <p className="text-sm text-gray-500">
+                Showing {testDrives.length} of {totalPages * itemsPerPage} entries
+              </p>
+              <div className="flex items-center space-x-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  Previous
+                </Button>
+                {[...Array(totalPages)].map((_, i) => (
+                  <Button
+                    key={i + 1}
+                    variant={currentPage === i + 1 ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => handlePageChange(i + 1)}
+                  >
+                    {i + 1}
+                  </Button>
+                ))}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </Button>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
