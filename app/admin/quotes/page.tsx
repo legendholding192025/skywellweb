@@ -10,6 +10,7 @@ import Cookies from "js-cookie"
 import { Calculator, Clock, AlertCircle, Filter, RefreshCw } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
+import AdminLayout from "@/components/admin/AdminLayout"
 
 interface Quote {
   _id: string
@@ -28,7 +29,7 @@ interface Quote {
   createdAt: string
 }
 
-export default function QuoteRequests() {
+function QuoteRequests() {
   const [quotes, setQuotes] = useState<Quote[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState("")
@@ -192,5 +193,13 @@ export default function QuoteRequests() {
         </CardContent>
       </Card>
     </div>
+  )
+}
+
+export default function QuotesPage() {
+  return (
+    <AdminLayout>
+      <QuoteRequests />
+    </AdminLayout>
   )
 } 
