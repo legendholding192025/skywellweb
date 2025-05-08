@@ -10,13 +10,17 @@ import { useTheme } from "next-themes"
 import { Facebook, Twitter, Instagram, Linkedin, Youtube, ArrowRight, Mail } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { useToast } from "@/components/ui/use-toast"
 
 export function Footer() {
   const { resolvedTheme } = useTheme()
+  const { toast } = useToast()
   // Use state for isDark to avoid hydration mismatch
   const [isDark, setIsDark] = useState<boolean | null>(null)
   const [email, setEmail] = useState("")
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [isMounted, setIsMounted] = useState(false)
 
   // Only set theme after component is mounted on client
@@ -32,11 +36,45 @@ export function Footer() {
     }
   }, [resolvedTheme, isMounted])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Here you would typically send this to your API
-    setIsSubmitted(true)
-    setTimeout(() => setIsSubmitted(false), 3000)
+    setError(null)
+    setIsSubmitting(true)
+
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to subscribe')
+      }
+
+      setIsSubmitted(true)
+      setEmail('')
+      toast({
+        title: "Successfully Subscribed!",
+        description: "Thank you for subscribing to our newsletter.",
+        duration: 5000,
+      })
+      setTimeout(() => setIsSubmitted(false), 5000)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to subscribe')
+      toast({
+        title: "Subscription Failed",
+        description: err instanceof Error ? err.message : 'Failed to subscribe to newsletter',
+        variant: "destructive",
+        duration: 5000,
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const socialLinks = [
@@ -211,14 +249,25 @@ export function Footer() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  disabled={isSubmitting}
                 />
               </div>
               <Button
                 type="submit"
                 className="w-full bg-[#4a9cd6] hover:bg-[#3a8cc6] text-white transition-colors duration-300"
+                disabled={isSubmitting}
               >
-                Subscribe
-                <ArrowRight className="ml-2 h-4 w-4" />
+                {isSubmitting ? (
+                  <div className="flex items-center justify-center">
+                    <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2" />
+                    Subscribing...
+                  </div>
+                ) : (
+                  <>
+                    Subscribe
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </>
+                )}
               </Button>
               {isSubmitted && (
                 <motion.p
@@ -227,6 +276,15 @@ export function Footer() {
                   className="text-sm text-green-500"
                 >
                   Thank you for subscribing!
+                </motion.p>
+              )}
+              {error && (
+                <motion.p
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-sm text-red-500"
+                >
+                  {error}
                 </motion.p>
               )}
             </form>

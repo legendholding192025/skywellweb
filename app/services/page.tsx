@@ -114,10 +114,31 @@ export default function ServicesPage() {
     setErrorMessage(null)
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      
-      console.log("Service booking data:", data)
+      const formData = {
+        firstName: data.name.split(' ')[0],
+        lastName: data.name.split(' ').slice(1).join(' '),
+        email: data.email,
+        phone: `${data.countryCode}${data.phone}`,
+        serviceType: data.serviceType,
+        preferredDate: data.date,
+        preferredTime: data.time,
+        message: data.additionalInfo,
+        vehicleModel: data.vehicleModel
+      }
+
+      const response = await fetch('/api/submit-service', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.message || 'Failed to submit service booking')
+      }
+
       setIsLoading(false)
       setIsSubmitted(true)
       reset()
@@ -127,9 +148,9 @@ export default function ServicesPage() {
         setIsSubmitted(false)
       }, 5000)
     } catch (error) {
-      console.error("Error submitting form:", error)
+      console.error('Error submitting form:', error)
       setIsLoading(false)
-      setErrorMessage(error instanceof Error ? error.message : "An unexpected error occurred. Please try again.")
+      setErrorMessage(error instanceof Error ? error.message : 'An unexpected error occurred. Please try again.')
     }
   }
 

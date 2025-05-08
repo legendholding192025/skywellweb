@@ -1,0 +1,196 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { Badge } from "@/components/ui/badge"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import Cookies from "js-cookie"
+import { Calculator, Clock, AlertCircle, Filter, RefreshCw } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
+
+interface Quote {
+  _id: string
+  name: string
+  email: string
+  phone: string
+  model: string
+  preferredDate: string
+  preferredTime: string
+  additionalInfo: string
+  campaignName: string
+  utmSource: string
+  utmMedium: string
+  utmCampaign: string
+  utmContent: string
+  createdAt: string
+}
+
+export default function QuoteRequests() {
+  const [quotes, setQuotes] = useState<Quote[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState("")
+  const router = useRouter()
+
+  useEffect(() => {
+    fetchQuotes()
+  }, [])
+
+  const fetchQuotes = async () => {
+    try {
+      const token = Cookies.get("admin_token")
+      if (!token) {
+        router.push("/admin/login")
+        return
+      }
+
+      const res = await fetch("/api/admin/quotes", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch quotes")
+      }
+
+      const data = await res.json()
+      setQuotes(data)
+      setError("")
+    } catch (err) {
+      setError("Failed to load quote requests")
+      console.error(err)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
+  }
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <Skeleton className="h-8 w-[200px]" />
+          <Skeleton className="h-10 w-[100px]" />
+        </div>
+        {[...Array(5)].map((_, i) => (
+          <Skeleton key={i} className="h-20 w-full" />
+        ))}
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="rounded-lg border border-red-200 p-4 bg-red-50">
+        <div className="flex items-center space-x-2 text-red-600">
+          <AlertCircle className="h-5 w-5" />
+          <p>{error}</p>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-semibold text-gray-800">Quote Requests</h1>
+        <Button onClick={fetchQuotes} variant="outline" size="icon">
+          <RefreshCw className="h-4 w-4" />
+        </Button>
+      </div>
+
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <div className="flex items-center space-x-2">
+            <Calculator className="h-5 w-5 text-gray-500" />
+            <h2 className="text-lg font-medium">Recent Requests</h2>
+          </div>
+          <Button variant="outline" size="sm">
+            <Filter className="h-4 w-4 mr-2" />
+            Filter
+          </Button>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Customer</TableHead>
+                <TableHead>Vehicle Model</TableHead>
+                <TableHead>Preferred Schedule</TableHead>
+                <TableHead>Contact</TableHead>
+                <TableHead>Campaign</TableHead>
+                <TableHead>Submitted</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {quotes.map((quote) => (
+                <TableRow key={quote._id}>
+                  <TableCell>
+                    <div>
+                      <p className="font-medium">{quote.name}</p>
+                    </div>
+                  </TableCell>
+                  <TableCell>{quote.model}</TableCell>
+                  <TableCell>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <div className="flex items-center space-x-1">
+                            <Clock className="h-4 w-4 text-gray-500" />
+                            <span>{formatDate(quote.preferredDate)}</span>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Preferred Time: {quote.preferredTime}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </TableCell>
+                  <TableCell>
+                    <div className="space-y-1">
+                      <p className="text-sm">{quote.email}</p>
+                      <p className="text-sm text-gray-500">{quote.phone}</p>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <Badge variant="outline" className="capitalize">
+                            {quote.campaignName || "Direct"}
+                          </Badge>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <div className="text-xs">
+                            <p>Source: {quote.utmSource || "Direct"}</p>
+                            <p>Medium: {quote.utmMedium || "None"}</p>
+                            <p>Campaign: {quote.utmCampaign || "None"}</p>
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </TableCell>
+                  <TableCell>
+                    <div className="text-sm text-gray-500">
+                      {formatDate(quote.createdAt)}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+    </div>
+  )
+} 

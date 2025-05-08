@@ -29,6 +29,7 @@ export function Navbar() {
     { name: "Models", href: "/models" },
     { name: "Features", href: "/features" },
     { name: "Charging", href: "/charging" },
+    { name: "Blogs", href: "/blogs" },
     { name: "Support", href: "/support" },
     { name: "Contact Us", href: "/contact-us" },
   ]
