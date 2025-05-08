@@ -9,10 +9,6 @@ const nextConfig = {
       'via.placeholder.com'
     ],
   },
-  experimental: {
-    serverActions: true,
-  },
-  // Configure dynamic routes
   async headers() {
     return [
       {
