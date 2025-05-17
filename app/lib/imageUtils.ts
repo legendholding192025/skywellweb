@@ -1,6 +1,4 @@
-import { IImageSpecs } from "@/models/Offer"
-
-export async function validateImageDimensions(url: string, specs: IImageSpecs): Promise<{ 
+export async function validateImage(url: string): Promise<{ 
   isValid: boolean
   error?: string 
 }> {
@@ -9,27 +7,8 @@ export async function validateImageDimensions(url: string, specs: IImageSpecs): 
       const img = new Image()
       
       img.onload = () => {
-        const errors: string[] = []
-        
-        if (img.width !== specs.width) {
-          errors.push(`Width must be ${specs.width}px`)
-        }
-        if (img.height !== specs.height) {
-          errors.push(`Height must be ${specs.height}px`)
-        }
-        
-        // Check aspect ratio
-        const actualRatio = img.width / img.height
-        const [targetWidth, targetHeight] = specs.aspectRatio.split(":").map(Number)
-        const targetRatio = targetWidth / targetHeight
-        
-        if (Math.abs(actualRatio - targetRatio) > 0.01) { // Allow small deviation
-          errors.push(`Aspect ratio must be ${specs.aspectRatio}`)
-        }
-
         resolve({
-          isValid: errors.length === 0,
-          error: errors.length > 0 ? errors.join(", ") : undefined
+          isValid: true
         })
       }
 
@@ -48,6 +27,12 @@ export async function validateImageDimensions(url: string, specs: IImageSpecs): 
       error: "Failed to validate image"
     }
   }
+}
+
+export function isValidImageUrl(url: string): boolean {
+  // Check if the URL ends with common image extensions
+  const imageExtensions = /\.(jpg|jpeg|png|gif|webp|svg)$/i
+  return imageExtensions.test(url)
 }
 
 export function formatBytes(bytes: number): string {
