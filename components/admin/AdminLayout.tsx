@@ -146,14 +146,14 @@ export default function AdminLayout({
         ${isSidebarOpen ? "w-72" : "w-0 -translate-x-full lg:translate-x-0 lg:w-20"}`}
       >
         <div
-          className={`flex items-center justify-between p-5 border-b ${!isSidebarOpen && !isMobile ? "justify-center" : ""}`}
+          className={`flex items-center justify-between p-5 border-b border-gray-100 ${!isSidebarOpen && !isMobile ? "justify-center" : ""}`}
         >
           {(isSidebarOpen || isMobile) && (
             <div className="flex items-center space-x-2">
               <div className="h-8 w-8 rounded-lg bg-blue-500 flex items-center justify-center text-white font-bold">
                 S
               </div>
-              <h1 className="text-xl font-bold text-gray-900">
+              <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
                 Skywell Admin
               </h1>
             </div>
@@ -181,8 +181,8 @@ export default function AdminLayout({
                             className={`flex items-center ${!isSidebarOpen && !isMobile ? "justify-center" : "justify-between"} px-4 py-3 rounded-lg transition-all duration-200
                             ${
                               isActive
-                                ? "bg-blue-50 text-blue-600"
-                                : "text-gray-600 hover:bg-gray-50"
+                                ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-md shadow-blue-200"
+                                : "text-gray-700 hover:bg-blue-50"
                             }`}
                           >
                             <div className="flex items-center space-x-3">
@@ -193,7 +193,7 @@ export default function AdminLayout({
                           </Link>
                         </TooltipTrigger>
                         {!isSidebarOpen && !isMobile && (
-                          <TooltipContent side="right">
+                          <TooltipContent side="right" className="bg-white text-gray-900 border-gray-200">
                             <p>{item.title}</p>
                           </TooltipContent>
                         )}
