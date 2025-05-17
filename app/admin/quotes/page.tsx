@@ -11,6 +11,16 @@ import { Calculator, Clock, AlertCircle, Filter, RefreshCw, Eye, Pencil, Trash2,
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import AdminLayout from "@/components/admin/AdminLayout"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 interface Quote {
   _id: string
@@ -33,6 +43,12 @@ function QuoteRequests() {
   const [quotes, setQuotes] = useState<Quote[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState("")
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const [refreshing, setRefreshing] = useState(false)
+  const [deleteQuoteId, setDeleteQuoteId] = useState<string | null>(null)
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+  const itemsPerPage = 10
   const router = useRouter()
 
   useEffect(() => {
@@ -41,6 +57,7 @@ function QuoteRequests() {
 
   const fetchQuotes = async () => {
     try {
+      setRefreshing(true)
       const token = Cookies.get("admin_token")
       if (!token) {
         router.push("/admin/login")
@@ -66,7 +83,16 @@ function QuoteRequests() {
       console.error(err)
     } finally {
       setIsLoading(false)
+      setRefreshing(false)
     }
+  }
+
+  const handleView = (id: string) => {
+    router.push(`/admin/quotes/${id}`)
+  }
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage)
   }
 
   const formatDate = (dateString: string) => {
@@ -75,6 +101,33 @@ function QuoteRequests() {
       month: "long",
       day: "numeric",
     })
+  }
+
+  const handleEdit = (id: string) => {
+    router.push(`/admin/quotes/${id}/edit`)
+  }
+
+  const handleDelete = async (id: string) => {
+    try {
+      const token = Cookies.get("admin_token")
+      const response = await fetch(`/api/admin/quotes/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to delete quote")
+      }
+
+      setQuotes(quotes.filter(quote => quote._id !== id))
+      setShowDeleteDialog(false)
+      setDeleteQuoteId(null)
+    } catch (err) {
+      console.error(err)
+      setError("Failed to delete quote")
+    }
   }
 
   if (isLoading) {
@@ -192,30 +245,33 @@ function QuoteRequests() {
                     <div className="flex items-center justify-end space-x-2">
                       <Button
                         variant="ghost"
-                        size="icon"
+                        size="sm"
                         onClick={() => handleView(quote._id)}
-                        className="h-8 w-8 text-blue-500 hover:text-blue-600 hover:bg-blue-50"
+                        className="text-blue-600 hover:text-blue-700"
                       >
                         <Eye className="h-4 w-4" />
+                        <span className="sr-only">View</span>
                       </Button>
                       <Button
                         variant="ghost"
-                        size="icon"
+                        size="sm"
                         onClick={() => handleEdit(quote._id)}
-                        className="h-8 w-8 text-amber-500 hover:text-amber-600 hover:bg-amber-50"
+                        className="text-amber-600 hover:text-amber-700"
                       >
                         <Pencil className="h-4 w-4" />
+                        <span className="sr-only">Edit</span>
                       </Button>
                       <Button
                         variant="ghost"
-                        size="icon"
+                        size="sm"
                         onClick={() => {
                           setDeleteQuoteId(quote._id)
                           setShowDeleteDialog(true)
                         }}
-                        className="h-8 w-8 text-red-500 hover:text-red-600 hover:bg-red-50"
+                        className="text-red-600 hover:text-red-700"
                       >
                         <Trash2 className="h-4 w-4" />
+                        <span className="sr-only">Delete</span>
                       </Button>
                     </div>
                   </TableCell>
@@ -223,6 +279,34 @@ function QuoteRequests() {
               ))}
             </TableBody>
           </Table>
+
+          {/* Add Pagination */}
+          <div className="flex items-center justify-between mt-4">
+            <p className="text-sm text-gray-500">
+              Showing {quotes.length} of {totalPages * itemsPerPage} entries
+            </p>
+            <div className="flex items-center space-x-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                disabled={currentPage === 1}
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <span className="text-sm text-gray-600">
+                Page {currentPage} of {totalPages}
+              </span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                disabled={currentPage === totalPages}
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
         </CardContent>
       </Card>
 

@@ -51,9 +51,9 @@ function ContactLeads() {
   const [contacts, setContacts] = useState<Contact[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState("")
-  const [refreshing, setRefreshing] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
+  const [refreshing, setRefreshing] = useState(false)
   const [deleteContactId, setDeleteContactId] = useState<string | null>(null)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const itemsPerPage = 10
@@ -65,29 +65,45 @@ function ContactLeads() {
 
   const fetchContacts = async () => {
     try {
+      setRefreshing(true)
       const token = Cookies.get("admin_token")
       if (!token) {
         router.push("/admin/login")
         return
       }
 
-      const response = await fetch(`/api/admin/contacts?page=${currentPage}&limit=${itemsPerPage}`, {
+      // First, try the new API endpoint
+      let response = await fetch(`/api/admin/contacts?page=${currentPage}&limit=${itemsPerPage}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
+
+      // If the new endpoint fails, try the legacy endpoint
+      if (!response.ok) {
+        response = await fetch(`/api/contact?page=${currentPage}&limit=${itemsPerPage}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+      }
 
       if (!response.ok) {
         throw new Error("Failed to fetch contacts")
       }
 
       const data = await response.json()
-      setContacts(data.contacts)
-      setTotalPages(Math.ceil(data.total / itemsPerPage))
+      
+      // Handle both new and legacy API response formats
+      const contacts = data.contacts || data
+      const total = data.total || contacts.length
+      
+      setContacts(contacts)
+      setTotalPages(Math.ceil(total / itemsPerPage))
       setError("")
     } catch (err) {
-      setError("Failed to load contact leads")
-      console.error(err)
+      console.error('Fetch error:', err)
+      setError("Failed to load contact leads. Please try again later.")
     } finally {
       setIsLoading(false)
       setRefreshing(false)
@@ -105,12 +121,24 @@ function ContactLeads() {
   const handleDelete = async (id: string) => {
     try {
       const token = Cookies.get("admin_token")
-      const response = await fetch(`/api/admin/contacts/${id}`, {
+      
+      // First, try the new API endpoint
+      let response = await fetch(`/api/admin/contacts/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
+
+      // If the new endpoint fails, try the legacy endpoint
+      if (!response.ok) {
+        response = await fetch(`/api/contact/${id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+      }
 
       if (!response.ok) {
         throw new Error("Failed to delete contact")
@@ -120,7 +148,8 @@ function ContactLeads() {
       setShowDeleteDialog(false)
       setDeleteContactId(null)
     } catch (err) {
-      console.error(err)
+      console.error('Delete error:', err)
+      setError("Failed to delete contact. Please try again later.")
     }
   }
 
@@ -160,20 +189,31 @@ function ContactLeads() {
         throw new Error("Not authenticated")
       }
 
-      const res = await fetch("/api/admin/contacts?limit=1000", {
+      // First, try the new API endpoint
+      let response = await fetch("/api/admin/contacts?limit=1000", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
 
-      if (!res.ok) {
+      // If the new endpoint fails, try the legacy endpoint
+      if (!response.ok) {
+        response = await fetch("/api/contact?limit=1000", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+      }
+
+      if (!response.ok) {
         throw new Error("Failed to fetch contacts")
       }
 
-      const data = await res.json()
+      const data = await response.json()
+      const contacts = data.contacts || data
       
       // Format data for Excel
-      return data.contacts.map((contact: Contact, index: number) => ({
+      return contacts.map((contact: Contact, index: number) => ({
         'S.N.': index + 1,
         'Name': contact.name,
         'Email': contact.email,
@@ -185,8 +225,8 @@ function ContactLeads() {
         'Submitted On': new Date(contact.createdAt).toLocaleDateString(),
       }))
     } catch (error) {
-      console.error('Failed to fetch contacts:', error)
-      throw error
+      console.error('Export error:', error)
+      throw new Error("Failed to export contacts. Please try again later.")
     }
   }
 

@@ -142,7 +142,7 @@ export function Footer() {
               <ul className="space-y-3">
                 <li>
                   <Link
-                    href="/about"
+                    href="/about-us"
                     className={`text-sm ${
                       isDark ? "text-gray-300 hover:text-white" : "text-gray-600 hover:text-black"
                     } hover:underline transition-colors duration-200`}
@@ -152,32 +152,32 @@ export function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="/sustainability"
+                    href="/blogs"
                     className={`text-sm ${
                       isDark ? "text-gray-300 hover:text-white" : "text-gray-600 hover:text-black"
                     } hover:underline transition-colors duration-200`}
                   >
-                    Sustainability
+                    News & Blog
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="/careers"
+                    href="/models"
                     className={`text-sm ${
                       isDark ? "text-gray-300 hover:text-white" : "text-gray-600 hover:text-black"
                     } hover:underline transition-colors duration-200`}
                   >
-                    Careers
+                    Our Models
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="/news"
+                    href="/contact-us"
                     className={`text-sm ${
                       isDark ? "text-gray-300 hover:text-white" : "text-gray-600 hover:text-black"
                     } hover:underline transition-colors duration-200`}
                   >
-                    News
+                    Contact Us
                   </Link>
                 </li>
               </ul>
@@ -189,12 +189,12 @@ export function Footer() {
               <ul className="space-y-3">
                 <li>
                   <Link
-                    href="/contact"
+                    href="/after-sales/support"
                     className={`text-sm ${
                       isDark ? "text-gray-300 hover:text-white" : "text-gray-600 hover:text-black"
                     } hover:underline transition-colors duration-200`}
                   >
-                    Contact Us
+                    Support Center
                   </Link>
                 </li>
                 <li>
@@ -209,22 +209,22 @@ export function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="/service"
+                    href="/after-sales/service-center"
                     className={`text-sm ${
                       isDark ? "text-gray-300 hover:text-white" : "text-gray-600 hover:text-black"
                     } hover:underline transition-colors duration-200`}
                   >
-                    Service Centers
+                    Service Center
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="/faq"
+                    href="/finance/calculator"
                     className={`text-sm ${
                       isDark ? "text-gray-300 hover:text-white" : "text-gray-600 hover:text-black"
                     } hover:underline transition-colors duration-200`}
                   >
-                    FAQ
+                    Finance Calculator
                   </Link>
                 </li>
               </ul>
@@ -303,12 +303,13 @@ export function Footer() {
               Experience Skywell electric vehicles at our state-of-the-art showroom in Dubai.
             </p>
           </div>
-          <Button
-            className="bg-[#4a9cd6] hover:bg-[#3a8cc6] text-white px-6 py-2"
-            onClick={() => window.open("/locations", "_blank")}
-          >
-            Find Locations
-          </Button>
+          <Link href="/contact-us">
+            <Button
+              className="bg-[#4a9cd6] hover:bg-[#3a8cc6] text-white px-6 py-2"
+            >
+              Find Locations
+            </Button>
+          </Link>
         </div>
 
         {/* Bottom Footer */}
@@ -319,7 +320,7 @@ export function Footer() {
             </p>
             <div className="flex space-x-6">
               <Link
-                href="/privacy"
+                href="/privacy-policy"
                 className={`text-sm ${
                   isDark ? "text-gray-400 hover:text-white" : "text-gray-600 hover:text-black"
                 } transition-colors duration-200`}
@@ -333,14 +334,6 @@ export function Footer() {
                 } transition-colors duration-200`}
               >
                 Terms of Service
-              </Link>
-              <Link
-                href="/sitemap"
-                className={`text-sm ${
-                  isDark ? "text-gray-400 hover:text-white" : "text-gray-600 hover:text-black"
-                } transition-colors duration-200`}
-              >
-                Sitemap
               </Link>
             </div>
           </div>

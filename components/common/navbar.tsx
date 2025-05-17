@@ -8,8 +8,6 @@ import { ChevronDown, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { ThemeToggle } from "./theme-toggle"
-import { useTheme } from "next-themes"
 
 interface SubMenuItem {
   name: string
@@ -33,9 +31,6 @@ export function Navbar() {
   const [hoverStyle, setHoverStyle] = useState({ left: "0px", width: "0px", opacity: 0 })
   const [activeStyle, setActiveStyle] = useState({ left: "0px", width: "0px" })
   const [imageError, setImageError] = useState(false)
-  const { resolvedTheme } = useTheme()
-  // Important: Set a default isDark to null initially to avoid hydration mismatch
-  const [isDark, setIsDark] = useState<boolean | null>(null)
   const [isMounted, setIsMounted] = useState(false)
 
   const navigation: NavigationItem[] = [
@@ -57,13 +52,8 @@ export function Navbar() {
       submenu: [
         {
           name: "Service Center",
-          href: "/services",
+          href: "/after-sales/service-center",
           description: "Schedule your vehicle service"
-        },
-        {
-          name: "Warranty",
-          href: "/after-sales/warranty",
-          description: "Learn about our warranty coverage"
         },
         {
           name: "Support",
@@ -73,7 +63,7 @@ export function Navbar() {
       ]
     },
     { 
-      name: "Finance & Offers", 
+      name: "Finance", 
       href: "/finance",
       submenu: [
         {
@@ -89,7 +79,7 @@ export function Navbar() {
       ]
     },
     { name: "Blogs", href: "/blogs" },
-    { name: "Contact Us", href: "/contact-us" },
+    { name: "Contact", href: "/contact-us" },
   ]
 
   const tabRefs = useRef<(HTMLDivElement | null)[]>(Array(navigation.length + 1).fill(null))
@@ -97,16 +87,7 @@ export function Navbar() {
   // Set mounted state
   useEffect(() => {
     setIsMounted(true)
-    // Only set isDark after component is mounted to avoid hydration mismatch
-    setIsDark(resolvedTheme === "dark")
-  }, [resolvedTheme])
-
-  // Update isDark when theme changes, but only after mounted
-  useEffect(() => {
-    if (isMounted) {
-      setIsDark(resolvedTheme === "dark")
-    }
-  }, [resolvedTheme, isMounted])
+  }, [])
 
   // Set active index based on current pathname only after mounting
   useEffect(() => {
@@ -171,14 +152,14 @@ export function Navbar() {
     }
   }, [isMounted])
 
-  // If not yet mounted or theme not resolved, render a simple placeholder
-  if (!isMounted || isDark === null) {
+  // If not yet mounted, render a simple placeholder
+  if (!isMounted) {
     return (
       <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-transparent">
         <div className="max-w-[1400px] mx-auto">
           <nav className="flex items-center justify-between px-6 py-3">
             <Link href="/" className="relative z-10">
-              <span className="text-xl font-bold">Skywell</span>
+              <span className={`text-xl font-bold text-white`}>Skywell</span>
             </Link>
             <div />
           </nav>
@@ -190,7 +171,7 @@ export function Navbar() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? (isDark ? "bg-black/80 backdrop-blur-md" : "bg-white/80 backdrop-blur-md") : "bg-transparent"
+        scrolled ? "bg-white/80 backdrop-blur-md" : "bg-transparent"
       }`}
     >
       <div className="max-w-[1400px] mx-auto">
@@ -208,7 +189,7 @@ export function Navbar() {
                 priority
               />
             ) : (
-              <span className="text-xl font-bold">Skywell</span>
+              <span className={`text-xl font-bold ${scrolled ? "text-black" : "text-white"}`}>Skywell</span>
             )}
           </Link>
 
@@ -217,9 +198,7 @@ export function Navbar() {
             <div className="relative flex items-center space-x-1">
               {/* Hover Highlight */}
               <div
-                className={`absolute h-[30px] transition-all duration-300 ease-out ${
-                  isDark ? "bg-[rgba(74,156,214,0.2)]" : "bg-[rgba(74,156,214,0.1)]"
-                } rounded-[6px] flex items-center pointer-events-none`}
+                className="absolute h-[30px] transition-all duration-300 ease-out bg-[rgba(74,156,214,0.1)] rounded-[6px] flex items-center pointer-events-none"
                 style={hoverStyle}
               />
 
@@ -239,9 +218,9 @@ export function Navbar() {
                   className={`px-3 py-2 cursor-pointer transition-colors duration-300 h-[30px] ${
                     index === activeIndex
                       ? "text-[#4a9cd6]"
-                      : isDark
-                        ? "text-white opacity-80 hover:opacity-100"
-                        : "text-black opacity-80 hover:opacity-100"
+                      : scrolled 
+                        ? "text-black opacity-80 hover:opacity-100"
+                        : "text-white opacity-80 hover:opacity-100"
                   }`}
                   onMouseEnter={() => setHoveredIndex(index)}
                   onMouseLeave={() => setHoveredIndex(null)}
@@ -256,20 +235,12 @@ export function Navbar() {
                       <DropdownMenuContent
                         align="start"
                         sideOffset={20}
-                        className={`w-[300px] p-2 ${
-                          isDark
-                            ? "bg-black/95 backdrop-blur-xl border border-neutral-800 text-white"
-                            : "bg-white/95 backdrop-blur-xl border border-neutral-100 text-black"
-                        } rounded-xl shadow-lg animate-in fade-in-0 zoom-in-95`}
+                        className="w-[300px] p-2 bg-white/95 backdrop-blur-xl border border-neutral-100 text-black rounded-xl shadow-lg animate-in fade-in-0 zoom-in-95"
                       >
                         {item.submenu.map((subItem, subIndex) => (
                           <DropdownMenuItem
                             key={`submenu-${subIndex}`}
-                            className={`flex items-center gap-4 px-3 py-2.5 rounded-lg cursor-pointer transition-colors ${
-                              isDark 
-                                ? "hover:bg-white/10 focus:bg-white/10" 
-                                : "hover:bg-black/5 focus:bg-black/5"
-                            }`}
+                            className="flex items-center gap-4 px-3 py-2.5 rounded-lg cursor-pointer transition-colors hover:bg-black/5 focus:bg-black/5"
                             onClick={() => router.push(subItem.href)}
                           >
                             {subItem.image && (
@@ -286,7 +257,7 @@ export function Navbar() {
                             )}
                             <div className="flex-1 min-w-0">
                               <div className="font-medium truncate">{subItem.name}</div>
-                              <div className={`text-sm truncate ${isDark ? "text-neutral-400" : "text-neutral-500"}`}>
+                              <div className="text-sm truncate text-neutral-500">
                                 {subItem.description}
                               </div>
                             </div>
@@ -312,16 +283,11 @@ export function Navbar() {
 
           {/* Right side buttons */}
           <div className="flex items-center">
-            {/* Theme Toggle */}
-            <div className="mr-4">
-              <ThemeToggle />
-            </div>
-
             <Link href="/get-quote">
               <Button
                 variant="ghost"
                 className={`text-sm font-medium mr-3 hidden md:flex hover:bg-[rgba(74,156,214,0.2)] transition-colors ${
-                  isDark ? "text-white opacity-80 hover:opacity-100" : "text-black opacity-80 hover:opacity-100"
+                  scrolled ? "text-black opacity-80 hover:opacity-100" : "text-white opacity-80 hover:opacity-100"
                 }`}
               >
                 Get a Quote
@@ -332,7 +298,7 @@ export function Navbar() {
               <Button
                 variant="ghost"
                 className={`text-sm font-medium mr-4 hidden md:flex hover:bg-[rgba(74,156,214,0.2)] transition-colors ${
-                  isDark ? "text-white opacity-80 hover:opacity-100" : "text-black opacity-80 hover:opacity-100"
+                  scrolled ? "text-black opacity-80 hover:opacity-100" : "text-white opacity-80 hover:opacity-100"
                 }`}
               >
                 Book a Test Drive
@@ -345,18 +311,14 @@ export function Navbar() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className={`md:hidden hover:bg-[rgba(74,156,214,0.2)] ${isDark ? "text-white" : "text-black"}`}
+                  className={`md:hidden hover:bg-[rgba(74,156,214,0.2)] ${scrolled ? "text-black" : "text-white"}`}
                 >
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
               <SheetContent
                 side="right"
-                className={`w-full sm:w-80 ${
-                  isDark 
-                    ? "bg-black/95 backdrop-blur-xl text-white border-neutral-800" 
-                    : "bg-white/95 backdrop-blur-xl text-black border-neutral-200"
-                }`}
+                className="w-full sm:w-80 bg-white/95 backdrop-blur-xl text-black border-neutral-200"
               >
                 <div className="flex flex-col h-full">
                   <div className="flex items-center justify-between py-4">
@@ -372,27 +334,22 @@ export function Navbar() {
                     ) : (
                       <span className="text-xl font-bold">Skywell</span>
                     )}
-                    <div className="flex items-center gap-4">
-                      <ThemeToggle />
-                      <SheetTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className={`hover:bg-[rgba(74,156,214,0.2)] ${isDark ? "text-white" : "text-black"}`}
-                        >
-                          <X className="h-5 w-5" />
-                        </Button>
-                      </SheetTrigger>
-                    </div>
+                    <SheetTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="hover:bg-[rgba(74,156,214,0.2)] text-black"
+                      >
+                        <X className="h-5 w-5" />
+                      </Button>
+                    </SheetTrigger>
                   </div>
                   <div className="flex flex-col space-y-6 mt-8">
                     {navigation.map((item) => (
                       <div key={`mobile-${item.name}`}>
                         {item.submenu ? (
                           <div className="space-y-3">
-                            <div className={`text-lg font-medium ${
-                              isDark ? "text-white opacity-80" : "text-black opacity-80"
-                            }`}>
+                            <div className="text-lg font-medium text-black opacity-80">
                               {item.name}
                             </div>
                             <div className="pl-4 space-y-2">
@@ -403,9 +360,7 @@ export function Navbar() {
                                   className={`block text-base ${
                                     pathname === subItem.href
                                       ? "text-[#4a9cd6]"
-                                      : isDark
-                                        ? "text-white/70 hover:text-white"
-                                        : "text-black/70 hover:text-black"
+                                      : "text-black/70 hover:text-black"
                                   }`}
                                 >
                                   {subItem.name}
@@ -419,9 +374,7 @@ export function Navbar() {
                             className={`text-lg font-medium ${
                               pathname === item.href
                                 ? "text-[#4a9cd6]"
-                                : isDark
-                                  ? "text-white opacity-80 hover:opacity-100"
-                                  : "text-black opacity-80 hover:opacity-100"
+                                : "text-black opacity-80 hover:opacity-100"
                             }`}
                           >
                             {item.name}
@@ -431,17 +384,13 @@ export function Navbar() {
                     ))}
                     <Link
                       href="/get-quote"
-                      className={`text-lg font-medium ${
-                        isDark ? "text-white opacity-80 hover:opacity-100" : "text-black opacity-80 hover:opacity-100"
-                      }`}
+                      className="text-lg font-medium text-black opacity-80 hover:opacity-100"
                     >
                       Get a Quote
                     </Link>
                     <Link
                       href="/test-drive"
-                      className={`text-lg font-medium ${
-                        isDark ? "text-white opacity-80 hover:opacity-100" : "text-black opacity-80 hover:opacity-100"
-                      }`}
+                      className="text-lg font-medium text-black opacity-80 hover:opacity-100"
                     >
                       Book a Test Drive
                     </Link>

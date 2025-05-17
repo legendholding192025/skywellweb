@@ -23,8 +23,16 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { cn } from "@/lib/utils"
+import type { LucideIcon } from "lucide-react"
 
-const navItems = [
+interface NavItem {
+  title: string
+  href: string
+  icon: LucideIcon
+}
+
+const navItems: NavItem[] = [
   {
     title: "Dashboard",
     href: "/admin/dashboard",
@@ -118,9 +126,9 @@ export default function AdminLayout({
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-white">
+      <div className="flex items-center justify-center min-h-screen bg-white" role="status" aria-label="Loading admin panel">
         <div className="flex flex-col items-center">
-          <div className="relative w-16 h-16">
+          <div className="relative w-16 h-16" aria-hidden="true">
             <div className="absolute top-0 left-0 w-full h-full rounded-full border-4 border-t-blue-500 border-r-transparent border-b-blue-300 border-l-transparent animate-spin"></div>
             <div className="absolute top-2 left-2 w-12 h-12 rounded-full border-4 border-t-transparent border-r-blue-400 border-b-transparent border-l-blue-400 animate-spin animation-delay-150"></div>
           </div>
@@ -144,13 +152,15 @@ export default function AdminLayout({
       <div
         className={`fixed top-0 left-0 h-full bg-white border-r border-gray-200 transition-all duration-300 ease-in-out z-50 
         ${isSidebarOpen ? "w-72" : "w-0 -translate-x-full lg:translate-x-0 lg:w-20"}`}
+        role="navigation"
+        aria-label="Main navigation"
       >
         <div
           className={`flex items-center justify-between p-5 border-b border-gray-100 ${!isSidebarOpen && !isMobile ? "justify-center" : ""}`}
         >
           {(isSidebarOpen || isMobile) && (
             <div className="flex items-center space-x-2">
-              <div className="h-8 w-8 rounded-lg bg-blue-500 flex items-center justify-center text-white font-bold">
+              <div className="h-8 w-8 rounded-lg bg-blue-500 flex items-center justify-center text-white font-bold" aria-hidden="true">
                 S
               </div>
               <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
@@ -161,8 +171,9 @@ export default function AdminLayout({
           <button
             onClick={() => setIsSidebarOpen(false)}
             className={`p-2 rounded-lg hover:bg-gray-100 text-gray-500 ${!isSidebarOpen && !isMobile ? "hidden" : ""}`}
+            aria-label="Close sidebar"
           >
-            <X className="h-5 w-5" />
+            <X className="h-5 w-5" aria-hidden="true" />
           </button>
         </div>
 
@@ -184,12 +195,13 @@ export default function AdminLayout({
                                 ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-md shadow-blue-200"
                                 : "text-gray-700 hover:bg-blue-50"
                             }`}
+                            aria-current={isActive ? "page" : undefined}
                           >
                             <div className="flex items-center space-x-3">
-                              <item.icon className={`h-5 w-5 ${isActive ? "text-blue-600" : "text-gray-400"}`} />
+                              <item.icon className={`h-5 w-5 ${isActive ? "text-blue-600" : "text-gray-400"}`} aria-hidden="true" />
                               {(isSidebarOpen || isMobile) && <span className="font-medium">{item.title}</span>}
                             </div>
-                            {(isSidebarOpen || isMobile) && isActive && <ChevronRight className="h-4 w-4" />}
+                            {(isSidebarOpen || isMobile) && isActive && <ChevronRight className="h-4 w-4" aria-hidden="true" />}
                           </Link>
                         </TooltipTrigger>
                         {!isSidebarOpen && !isMobile && (
@@ -213,12 +225,13 @@ export default function AdminLayout({
                 <button
                   onClick={handleLogout}
                   className={`flex items-center ${!isSidebarOpen && !isMobile ? "justify-center" : "justify-between"} w-full px-4 py-3 rounded-lg hover:bg-red-50 text-red-600 transition-colors duration-200`}
+                  aria-label="Logout from admin panel"
                 >
                   <div className="flex items-center space-x-3">
-                    <LogOut className="h-5 w-5" />
+                    <LogOut className="h-5 w-5" aria-hidden="true" />
                     {(isSidebarOpen || isMobile) && <span className="font-medium">Logout</span>}
                   </div>
-                  {(isSidebarOpen || isMobile) && <ChevronRight className="h-4 w-4 opacity-70" />}
+                  {(isSidebarOpen || isMobile) && <ChevronRight className="h-4 w-4 opacity-70" aria-hidden="true" />}
                 </button>
               </TooltipTrigger>
               {!isSidebarOpen && !isMobile && (
@@ -233,14 +246,16 @@ export default function AdminLayout({
 
       {/* Main Content */}
       <div className={`${isSidebarOpen ? "lg:pl-72" : "lg:pl-20"}`}>
-        <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
+        <header className="bg-white border-b border-gray-200 sticky top-0 z-30" role="banner">
           <div className="flex items-center justify-between px-6 py-4">
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                 className="p-2 rounded-lg hover:bg-gray-100 text-gray-600"
+                aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
+                aria-expanded={isSidebarOpen}
               >
-                <Menu className="h-5 w-5" />
+                <Menu className="h-5 w-5" aria-hidden="true" />
               </button>
               <div className="text-sm font-medium text-gray-800 hidden sm:block">
                 {navItems.find((item) => item.href === pathname)?.title || "Dashboard"}
@@ -248,9 +263,14 @@ export default function AdminLayout({
             </div>
 
             <div className="flex items-center space-x-4">
-              <Button variant="outline" size="icon" className="rounded-full h-9 w-9 relative">
-                <Bell className="h-5 w-5 text-gray-600" />
-                <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-red-500 border-2 border-white"></span>
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="rounded-full h-9 w-9 relative"
+                aria-label="Notifications"
+              >
+                <Bell className="h-5 w-5 text-gray-600" aria-hidden="true" />
+                <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-red-500 border-2 border-white" aria-label="New notifications"></span>
               </Button>
 
               <div className="flex items-center space-x-3">

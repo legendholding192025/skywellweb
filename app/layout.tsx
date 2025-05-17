@@ -2,7 +2,6 @@ import type React from "react"
 import "./globals.css"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
-import { ThemeProvider } from "@/components/common/theme-provider"
 import { CookieConsent } from "@/components/common/cookie-consent"
 import { Toaster } from "@/components/ui/toaster"
 
@@ -21,13 +20,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          {children}
-          <CookieConsent />
-          <Toaster />
-        </ThemeProvider>
+        {children}
+        <CookieConsent />
+        <Toaster />
       </body>
     </html>
   )
