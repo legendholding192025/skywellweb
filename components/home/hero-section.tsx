@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { ChevronRight, ArrowRight } from "lucide-react"
 import { useTheme } from "next-themes"
+import Link from "next/link"
 
 export function HeroSection() {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -105,46 +106,50 @@ export function HeroSection() {
               transition={{ duration: 0.8, delay: 1.1 }}
             >
               {/* Primary Button with Enhanced Styling */}
-              <motion.div
-                className="relative w-full sm:w-auto"
-                onMouseEnter={() => setIsPrimaryHovered(true)}
-                onMouseLeave={() => setIsPrimaryHovered(false)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <div className="absolute inset-0 bg-[#4a9cd6] rounded-md blur-md opacity-50 group-hover:opacity-75 transition-all duration-300"></div>
-                <button className="relative w-full sm:w-auto bg-gradient-to-r from-[#4a9cd6] to-[#3a8cc6] text-white font-medium px-6 py-3 sm:py-2.5 rounded-md text-base sm:text-sm shadow-lg flex items-center justify-center overflow-hidden group z-10">
-                  <span className="relative z-10 flex items-center">
-                    Explore ET5
-                    <motion.div animate={{ x: isPrimaryHovered ? 5 : 0 }} transition={{ duration: 0.3 }}>
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </motion.div>
-                  </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#3a8cc6] to-[#4a9cd6] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-                </button>
-              </motion.div>
+              <Link href="/models/et5" className="w-full sm:w-auto">
+                <motion.div
+                  className="relative w-full sm:w-auto"
+                  onMouseEnter={() => setIsPrimaryHovered(true)}
+                  onMouseLeave={() => setIsPrimaryHovered(false)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="absolute inset-0 bg-[#4a9cd6] rounded-md blur-md opacity-50 group-hover:opacity-75 transition-all duration-300"></div>
+                  <button className="relative w-full sm:w-auto bg-gradient-to-r from-[#4a9cd6] to-[#3a8cc6] text-white font-medium px-6 py-3 sm:py-2.5 rounded-md text-base sm:text-sm shadow-lg flex items-center justify-center overflow-hidden group z-10">
+                    <span className="relative z-10 flex items-center">
+                      Explore ET5
+                      <motion.div animate={{ x: isPrimaryHovered ? 5 : 0 }} transition={{ duration: 0.3 }}>
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </motion.div>
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#3a8cc6] to-[#4a9cd6] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                  </button>
+                </motion.div>
+              </Link>
 
               {/* Secondary Button with Enhanced Styling */}
-              <motion.div
-                className="relative w-full sm:w-auto"
-                onMouseEnter={() => setIsSecondaryHovered(true)}
-                onMouseLeave={() => setIsSecondaryHovered(false)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <button className="relative w-full sm:w-auto bg-transparent border-2 border-white text-white font-medium px-6 py-3 sm:py-2 rounded-md text-base sm:text-sm flex items-center justify-center overflow-hidden group">
-                  <span className="relative z-10 flex items-center">
-                    Book a Test Drive
-                    <motion.div
-                      animate={{ x: isSecondaryHovered ? 5 : 0, opacity: isSecondaryHovered ? 1 : 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <ChevronRight className="ml-2 h-4 w-4" />
-                    </motion.div>
-                  </span>
-                  <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
-                </button>
-              </motion.div>
+              <Link href="/test-drive" className="w-full sm:w-auto">
+                <motion.div
+                  className="relative w-full sm:w-auto"
+                  onMouseEnter={() => setIsSecondaryHovered(true)}
+                  onMouseLeave={() => setIsSecondaryHovered(false)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <button className="relative w-full sm:w-auto bg-transparent border-2 border-white text-white font-medium px-6 py-3 sm:py-2 rounded-md text-base sm:text-sm flex items-center justify-center overflow-hidden group">
+                    <span className="relative z-10 flex items-center">
+                      Book a Test Drive
+                      <motion.div
+                        animate={{ x: isSecondaryHovered ? 5 : 0, opacity: isSecondaryHovered ? 1 : 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <ChevronRight className="ml-2 h-4 w-4" />
+                      </motion.div>
+                    </span>
+                    <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                  </button>
+                </motion.div>
+              </Link>
             </motion.div>
           </div>
         </div>

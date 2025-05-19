@@ -6,6 +6,7 @@ import { useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { useTheme } from "next-themes"
 import Image from "next/image"
+import Link from "next/link"
 import { Zap, Shield, Leaf, Award, Clock, HeartHandshake, ChevronRight, CheckCircle, BarChart3 } from "lucide-react"
 
 export function WhyChooseSection() {
@@ -195,10 +196,12 @@ export function WhyChooseSection() {
                 Experience the perfect blend of performance, technology, and sustainability with Skywell's innovative
                 electric vehicles.
               </p>
-              <button className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#4a9cd6] text-white font-medium hover:bg-[#2d7eb3] transition-colors group">
-                Book a Test Drive
-                <ChevronRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-              </button>
+              <Link href="/test-drive">
+                <button className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#4a9cd6] text-white font-medium hover:bg-[#2d7eb3] transition-colors group">
+                  Book a Test Drive
+                  <ChevronRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+                </button>
+              </Link>
             </motion.div>
           </div>
         </div>
@@ -279,10 +282,12 @@ export function WhyChooseSection() {
                 switch to our innovative electric vehicles.
               </p>
               <div className="flex flex-wrap gap-4">
-                <button className="px-6 py-3 rounded-full bg-gradient-to-r from-[#4a9cd6] to-[#2d7eb3] text-white font-medium shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
-                  Find a Dealer
-                  <ChevronRight className="inline-block w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" />
-                </button>
+                <Link href="/test-drive">
+                  <button className="px-6 py-3 rounded-full bg-gradient-to-r from-[#4a9cd6] to-[#2d7eb3] text-white font-medium shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
+                    Book a Test Drive
+                    <ChevronRight className="inline-block w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" />
+                  </button>
+                </Link>
                 <button
                   className={`px-6 py-3 rounded-full font-medium ${
                     isDark ? "bg-white/10 text-white hover:bg-white/20" : "bg-black/5 text-gray-900 hover:bg-black/10"

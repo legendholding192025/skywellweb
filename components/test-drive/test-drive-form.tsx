@@ -543,9 +543,10 @@ export function TestDriveForm() {
             <p className="text-sm opacity-80">
               {selectedLocation === "dubai" ? (
                 <>
-                  Legend Holding Showroom<br />
-                  Sheikh Zayed Road<br />
-                  Dubai, United Arab Emirates
+                  Skywell Showroom<br />
+                  Showroom S02, Al Khoory Sky Garden,<br />
+                  Al Maktoum Road, Port Saeed,<br />
+                  Deira, Dubai, UAE
                 </>
               ) : (
                 <>
@@ -565,8 +566,8 @@ export function TestDriveForm() {
                 +971 4 234 5678
               </a>{" "}
               or{" "}
-              <a href="mailto:testdrive@skywell-uae.com" className="text-[#4a9cd6] hover:underline">
-                testdrive@skywell-uae.com
+              <a href="mailto:skywell@legendmotorsuae.com" className="text-[#4a9cd6] hover:underline">
+                skywell@legendmotorsuae.com
               </a>
             </p>
           </div>
