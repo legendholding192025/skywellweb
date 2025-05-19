@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
-import { ChevronDown, Menu, X } from "lucide-react"
+import { ChevronDown, Menu, X, Phone } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -283,10 +283,24 @@ export function Navbar() {
 
           {/* Right side buttons */}
           <div className="flex items-center">
+            <Link href="tel:04-221-9958">
+              <Button
+                variant="ghost"
+                className={`text-sm font-medium mr-3 hidden md:flex items-center gap-2 hover:bg-[rgba(74,156,214,0.2)] group transition-all ${
+                  scrolled ? "text-black opacity-80 hover:opacity-100" : "text-white opacity-80 hover:opacity-100"
+                }`}
+              >
+                <Phone className="h-4 w-4 group-hover:animate-wiggle" />
+                <span className="relative after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-current after:transition-all group-hover:after:w-full">
+                  04 221 9958
+                </span>
+              </Button>
+            </Link>
+
             <Link href="/get-quote">
               <Button
                 variant="ghost"
-                className={`text-sm font-medium mr-3 hidden md:flex hover:bg-[rgba(74,156,214,0.2)] transition-colors ${
+                className={`text-sm font-medium mr-4 hidden md:flex hover:bg-[rgba(74,156,214,0.2)] transition-colors ${
                   scrolled ? "text-black opacity-80 hover:opacity-100" : "text-white opacity-80 hover:opacity-100"
                 }`}
               >
