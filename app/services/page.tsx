@@ -35,8 +35,8 @@ const serviceCenter = {
   name: "Ras Al Khor Service Center",
   address: "Ras Al Khor Industrial Area, Dubai, UAE",
   phone: "+971 4 234 5678",
-  email: "service@skywell-uae.com",
-  hours: "Mon-Sat: 8:00 AM - 8:00 PM"
+  email: "skywell@legendmotorsuae.com",
+  hours: "Mon-Sat: 9:00 AM - 7:00 PM"
 }
 
 const timeSlots = [
@@ -46,11 +46,8 @@ const timeSlots = [
   "12:00 PM",
   "1:00 PM",
   "2:00 PM",
-  "3:00 PM",
-  "4:00 PM",
-  "5:00 PM",
-  "6:00 PM",
-  "7:00 PM"
+  "3:00 PM"
+  
 ]
 
 const serviceTypes = [

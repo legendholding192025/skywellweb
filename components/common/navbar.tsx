@@ -78,6 +78,7 @@ export function Navbar() {
         }
       ]
     },
+    { name: "About Us", href: "/about-us" },
     { name: "Blogs", href: "/blogs" },
     { name: "Contact", href: "/contact-us" },
   ]

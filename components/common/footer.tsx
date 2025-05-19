@@ -209,7 +209,7 @@ export function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="/after-sales/service-center"
+                    href="/services"
                     className={`text-sm ${
                       isDark ? "text-gray-300 hover:text-white" : "text-gray-600 hover:text-black"
                     } hover:underline transition-colors duration-200`}
