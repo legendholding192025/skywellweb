@@ -84,13 +84,10 @@ export function ContactSection() {
                   <h4 className="font-medium mb-3">Business Hours</h4>
                   <ul className="space-y-1 opacity-90">
                     <li className="flex justify-between">
-                      <span>Monday - Saturday:</span>
-                      <span>9:00 AM - 8:00 PM</span>
+                      <span>Monday - Sunday:</span>
+                      <span>9:00 AM - 7:30 PM</span>
                     </li>
-                    <li className="flex justify-between">
-                      <span>Sunday:</span>
-                      <span>Closed</span>
-                    </li>
+                  
                   </ul>
                 </div>
               </div>

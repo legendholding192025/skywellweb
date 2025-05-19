@@ -15,6 +15,7 @@ import { SimpleDatePicker } from "@/components/common/simple-date-picker"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { CountryPhoneSelect } from "@/components/common/country-phone-select"
 import { useSearchParams } from "next/navigation"
+import Image from "next/image"
 
 type FormData = {
   name: string
@@ -44,7 +45,6 @@ const timeSlots = [
 
 const vehicleOptions = [
   { id: "et5", name: "Skywell ET5", description: "Electric SUV" },
-  { id: "et6", name: "Skywell ET6", description: "Luxury Electric SUV" },
 ]
 
 // API constants - same as test-drive
@@ -372,33 +372,20 @@ export function GetQuoteForm() {
 
               {/* Vehicle Interest Field */}
               <div className="space-y-2">
-                <Label htmlFor="vehicleInterest" className={errors.vehicleInterest ? "text-red-500" : ""}>
-                  Vehicle Interest*
-                </Label>
-                <Controller
-                  name="vehicleInterest"
-                  control={control}
-                  rules={{ required: "Please select a vehicle" }}
-                  render={({ field }) => (
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <SelectTrigger
-                        className={`w-full ${errors.vehicleInterest ? "border-red-500" : ""} ${
-                          isDark ? "bg-gray-800" : "bg-gray-50"
-                        }`}
-                      >
-                        <SelectValue placeholder="Select a vehicle" />
-                      </SelectTrigger>
-                      <SelectContent className={isDark ? "bg-gray-800" : "bg-white"}>
-                        {vehicleOptions.map((option) => (
-                          <SelectItem key={option.id} value={option.id}>
-                            {option.name} - {option.description}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-                {errors.vehicleInterest && <p className="text-red-500 text-sm">{errors.vehicleInterest.message}</p>}
+                <Label>Vehicle</Label>
+                <div
+                  className={`p-4 rounded-lg border ${isDark ? "bg-gray-800 border-gray-700" : "bg-gray-50 border-gray-200"}`}
+                >
+                  <div className="flex items-center">
+                    <div className="flex-1">
+                      <h4 className="font-medium">Skywell ET5</h4>
+                      <p className="text-sm opacity-70">Electric SUV</p>
+                    </div>
+                    <div className="w-24 h-16 relative">
+                      <Image src="/sleek-electric-vehicle.png" alt="Skywell ET5" fill className="object-contain" />
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Date Field with Calendar */}
@@ -522,8 +509,8 @@ export function GetQuoteForm() {
                 +971 4 234 5678
               </a>{" "}
               or{" "}
-              <a href="mailto:sales@skywell-uae.com" className="text-[#4a9cd6] hover:underline">
-                sales@skywell-uae.com
+              <a href="mailto:marketing@skywell-uae.com" className="text-[#4a9cd6] hover:underline">
+                marketing@skywell-uae.com
               </a>
             </p>
           </div>

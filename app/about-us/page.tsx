@@ -16,7 +16,7 @@ export default function AboutUsPage() {
         {/* Hero Section */}
         <div className="relative h-[300px] md:h-[400px]">
           <Image
-            src="https://res.cloudinary.com/dckrspiqe/image/upload/v1710835357/showroom-hero_kgxeip.jpg"
+            src="https://res.cloudinary.com/dosxengut/image/upload/v1746784919/1-1-2_geivzn.jpg"
             alt="Legend Motors Showroom"
             fill
             className="object-cover brightness-50"
@@ -32,23 +32,15 @@ export default function AboutUsPage() {
         <div className="container py-16 px-4 max-w-7xl mx-auto">
           {/* Legend Motors Section */}
           <section className="mb-20">
-            <h2 className="text-3xl font-bold mb-6">Our Legacy in the UAE</h2>
+            <h2 className="text-3xl font-bold mb-6">About Legend Motors</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
               <div>
                 <p className="text-lg mb-6">
-                  Established over 15 years ago, Legend Holding Group has become a cornerstone of the UAE's automotive landscape. 
-                  As a multi-disciplined organization, we've built our reputation on putting customers at the heart of everything we do.
+                  From humble beginnings in 2008, Legend Holding Group has grown from a small trading company into a global powerhouse based in the UAE. Spanning industries like automotive, green energy, travel, media, technology, logistics, and more, we deliver comprehensive solutions that enhance daily life.
                 </p>
                 <p className="text-lg mb-6">
-                  Our business interests span across multiple sectors including:
+                  With over 500 dedicated experts, we prioritize people, innovation, and partnerships, blending excellence with a family spirit. More than a conglomerate, we're a community committed to progress, integrity, and creating a better future.
                 </p>
-                <ul className="list-disc pl-6 space-y-2 mb-6">
-                  <li>Automotive Excellence</li>
-                  <li>Tourism Services</li>
-                  <li>Rent-A-Car Solutions</li>
-                  <li>Energy Innovation</li>
-                  <li>Chemical Distribution</li>
-                </ul>
                 <p className="text-lg">
                   With state-of-the-art showrooms in both Dubai and Abu Dhabi, we're proud to be the exclusive distributor 
                   for Skywell new energy electric vehicles in Dubai, along with Geely Commercial Electric Vehicles and 
@@ -57,7 +49,7 @@ export default function AboutUsPage() {
               </div>
               <div className="relative h-[300px] md:h-[400px] rounded-lg overflow-hidden">
                 <Image
-                  src="https://res.cloudinary.com/dckrspiqe/image/upload/v1710835357/legend-motors-building_kgxeip.jpg"
+                  src="https://res.cloudinary.com/dosxengut/image/upload/v1746784919/1-1-2_geivzn.jpg"
                   alt="Legend Motors Building"
                   fill
                   className="object-cover"
@@ -72,7 +64,7 @@ export default function AboutUsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
               <div className="order-2 md:order-1 relative h-[300px] md:h-[400px] rounded-lg overflow-hidden">
                 <Image
-                  src="https://res.cloudinary.com/dckrspiqe/image/upload/v1710835357/skywell-factory_kgxeip.jpg"
+                  src="https://res.cloudinary.com/dosxengut/image/upload/v1747634627/5b8db088882e43f390dd4a6afdbd08c7_slsp4n.jpg"
                   alt="Skywell Manufacturing Facility"
                   fill
                   className="object-cover"
@@ -80,23 +72,13 @@ export default function AboutUsPage() {
               </div>
               <div className="order-1 md:order-2">
                 <p className="text-lg mb-6">
-                  Skywell is a pioneering force in the electric vehicle industry, backed by decades of expertise in 
-                  new energy vehicle research, development, and manufacturing. Founded in 2011, Skywell has rapidly 
-                  emerged as one of China's leading electric vehicle manufacturers.
+                  Skywell is a new-generation automotive brand redefining electric mobility with intelligent technology, sustainable design, and exceptional value. As a forward-thinking manufacturer of electric and new energy vehicles, Skywell is committed to creating a cleaner, smarter, and more connected driving experience for modern lifestyles.
                 </p>
                 <p className="text-lg mb-6">
-                  With a commitment to sustainable transportation, Skywell has invested heavily in:
+                  Backed by the global strength of the Skywell Group and officially represented in the UAE by Legend Motors, Skywell delivers vehicles that blend innovation with everyday functionality. From cutting-edge infotainment systems and advanced driver-assistance features to premium interiors and zero-emission performance, Skywell sets a new standard for what electric vehicles can offer.
                 </p>
-                <ul className="list-disc pl-6 space-y-2 mb-6">
-                  <li>Advanced R&D facilities</li>
-                  <li>State-of-the-art manufacturing plants</li>
-                  <li>Innovative battery technology</li>
-                  <li>Smart vehicle connectivity</li>
-                  <li>Autonomous driving capabilities</li>
-                </ul>
                 <p className="text-lg">
-                  Their flagship model, the Skywell ET5, represents the perfect blend of performance, luxury, and 
-                  environmental consciousness, setting new standards in the electric SUV segment.
+                  With a vision rooted in sustainability and progress, Skywell UAE offers customers not just a car, but a smarter way to move forward—powered by technology, supported by excellence, and designed for tomorrow.
                 </p>
               </div>
             </div>

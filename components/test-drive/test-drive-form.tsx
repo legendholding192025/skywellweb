@@ -413,35 +413,18 @@ export function TestDriveForm() {
 
               {/* Model Selection */}
               <div className="space-y-2 md:col-span-2">
-                <Label>Model*</Label>
+                <Label>Model</Label>
                 <div
                   className={`p-4 rounded-lg border ${isDark ? "bg-gray-800 border-gray-700" : "bg-gray-50 border-gray-200"}`}
                 >
                   <div className="flex items-center">
-                    <input
-                      type="radio"
-                      id="et5"
-                      value="Skywell ET5"
-                      className="hidden"
-                      {...register("model")}
-                      defaultChecked
-                    />
-                    <label htmlFor="et5" className="flex items-center cursor-pointer w-full">
-                      <div
-                        className={`w-5 h-5 rounded-full border-2 ${
-                          isDark ? "border-gray-400" : "border-gray-500"
-                        } flex items-center justify-center mr-3`}
-                      >
-                        <div className="w-3 h-3 rounded-full bg-[#4a9cd6]"></div>
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="font-medium">Skywell ET5</h4>
-                        <p className="text-sm opacity-70">Electric SUV with 450km range</p>
-                      </div>
-                      <div className="w-24 h-16 relative">
-                        <Image src="/sleek-electric-vehicle.png" alt="Skywell ET5" fill className="object-contain" />
-                      </div>
-                    </label>
+                    <div className="flex-1">
+                      <h4 className="font-medium">Skywell ET5</h4>
+                      <p className="text-sm opacity-70">Electric SUV with 450km range</p>
+                    </div>
+                    <div className="w-24 h-16 relative">
+                      <Image src="/sleek-electric-vehicle.png" alt="Skywell ET5" fill className="object-contain" />
+                    </div>
                   </div>
                 </div>
               </div>

@@ -137,67 +137,10 @@ export function WhyChooseSection() {
           >
             <Image src="https://res.cloudinary.com/dckrspiqe/image/upload/v1745843638/Skywell-et5-lr-10_result_c7w5j6.jpg" alt="Skywell Showroom" fill className="object-cover" priority />
             <div className="absolute inset-0 bg-gradient-to-tr from-black/70 via-black/40 to-transparent" />
-
-            {/* Overlay content */}
-            <div className="absolute inset-0 flex flex-col justify-end p-8">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3 }}
-                className="bg-black/30 backdrop-blur-sm p-6 rounded-xl border border-white/10 max-w-md"
-              >
-                <h3 className="text-2xl font-bold text-white mb-3">Join the Electric Revolution</h3>
-                <p className="text-gray-200 mb-4">
-                  Experience the perfect blend of performance, technology, and sustainability with Skywell's innovative
-                  electric vehicles.
-                </p>
-                <button className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#4a9cd6] text-white font-medium hover:bg-[#2d7eb3] transition-colors group">
-                  Book a Test Drive
-                  <ChevronRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-                </button>
-              </motion.div>
-            </div>
           </motion.div>
 
           {/* Right Column - Key Benefits */}
           <div className="space-y-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className={`p-6 rounded-xl border ${
-                isDark ? "bg-white/5 border-white/10" : "bg-white border-gray-200"
-              } shadow-lg`}
-            >
-              <h3 className={`text-xl font-bold mb-4 ${isDark ? "text-white" : "text-gray-900"}`}>
-                The Skywell Advantage
-              </h3>
-              <ul className="space-y-3">
-                {[
-                  "Leading electric vehicle technology",
-                  "Premium quality at competitive prices",
-                  "Comprehensive warranty coverage",
-                  "Exceptional safety standards",
-                  "Sustainable manufacturing practices",
-                  "Nationwide service network",
-                ].map((item, index) => (
-                  <motion.li
-                    key={index}
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.3 + index * 0.1 }}
-                    className="flex items-start gap-3"
-                  >
-                    <CheckCircle className="w-5 h-5 text-[#4a9cd6] shrink-0 mt-0.5" />
-                    <span className={isDark ? "text-gray-300" : "text-gray-700"}>{item}</span>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
-
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -236,6 +179,26 @@ export function WhyChooseSection() {
                   ),
                 )}
               </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className={`p-6 rounded-xl ${
+                isDark ? "bg-white/5 border border-white/10" : "bg-white border border-gray-200"
+              }`}
+            >
+              <h3 className="text-2xl font-bold mb-3">Join the Electric Revolution</h3>
+              <p className={`mb-4 ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+                Experience the perfect blend of performance, technology, and sustainability with Skywell's innovative
+                electric vehicles.
+              </p>
+              <button className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#4a9cd6] text-white font-medium hover:bg-[#2d7eb3] transition-colors group">
+                Book a Test Drive
+                <ChevronRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+              </button>
             </motion.div>
           </div>
         </div>
