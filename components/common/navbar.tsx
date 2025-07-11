@@ -155,11 +155,11 @@ export function Navbar() {
   // If not yet mounted, render a simple placeholder
   if (!isMounted) {
     return (
-      <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-transparent">
+      <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-black/10 backdrop-blur-sm">
         <div className="max-w-[1400px] mx-auto">
           <nav className="flex items-center justify-between px-6 py-3">
             <Link href="/" className="relative z-10">
-              <span className={`text-xl font-bold text-white`}>Skywell</span>
+              <span className={`text-xl font-bold text-white drop-shadow-sm`}>Skywell</span>
             </Link>
             <div />
           </nav>
@@ -171,7 +171,7 @@ export function Navbar() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? "bg-white/80 backdrop-blur-md" : "bg-transparent"
+        scrolled ? "bg-white/80 backdrop-blur-md shadow-lg" : "bg-black/10 backdrop-blur-sm"
       }`}
     >
       <div className="max-w-[1400px] mx-auto">
@@ -189,7 +189,7 @@ export function Navbar() {
                 priority
               />
             ) : (
-              <span className={`text-xl font-bold ${scrolled ? "text-black" : "text-white"}`}>Skywell</span>
+              <span className={`text-xl font-bold ${scrolled ? "text-black" : "text-white drop-shadow-sm"}`}>Skywell</span>
             )}
           </Link>
 
@@ -220,7 +220,7 @@ export function Navbar() {
                       ? "text-[#4a9cd6]"
                       : scrolled 
                         ? "text-black opacity-80 hover:opacity-100"
-                        : "text-white opacity-80 hover:opacity-100"
+                        : "text-white opacity-90 hover:opacity-100 drop-shadow-sm"
                   }`}
                   onMouseEnter={() => setHoveredIndex(index)}
                   onMouseLeave={() => setHoveredIndex(null)}
@@ -287,7 +287,7 @@ export function Navbar() {
               <Button
                 variant="ghost"
                 className={`text-sm font-medium mr-3 hidden md:flex items-center gap-2 hover:bg-[rgba(74,156,214,0.2)] group transition-all ${
-                  scrolled ? "text-black opacity-80 hover:opacity-100" : "text-white opacity-80 hover:opacity-100"
+                  scrolled ? "text-black opacity-80 hover:opacity-100" : "text-white opacity-90 hover:opacity-100 drop-shadow-sm"
                 }`}
               >
                 <Phone className="h-4 w-4 group-hover:animate-wiggle" />
@@ -301,7 +301,7 @@ export function Navbar() {
               <Button
                 variant="ghost"
                 className={`text-sm font-medium mr-4 hidden md:flex hover:bg-[rgba(74,156,214,0.2)] transition-colors ${
-                  scrolled ? "text-black opacity-80 hover:opacity-100" : "text-white opacity-80 hover:opacity-100"
+                  scrolled ? "text-black opacity-80 hover:opacity-100" : "text-white opacity-90 hover:opacity-100 drop-shadow-sm"
                 }`}
               >
                 Get a Quote
@@ -312,7 +312,7 @@ export function Navbar() {
               <Button
                 variant="ghost"
                 className={`text-sm font-medium mr-4 hidden md:flex hover:bg-[rgba(74,156,214,0.2)] transition-colors ${
-                  scrolled ? "text-black opacity-80 hover:opacity-100" : "text-white opacity-80 hover:opacity-100"
+                  scrolled ? "text-black opacity-80 hover:opacity-100" : "text-white opacity-90 hover:opacity-100 drop-shadow-sm"
                 }`}
               >
                 Book a Test Drive
@@ -325,7 +325,7 @@ export function Navbar() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className={`md:hidden hover:bg-[rgba(74,156,214,0.2)] ${scrolled ? "text-black" : "text-white"}`}
+                  className={`md:hidden hover:bg-[rgba(74,156,214,0.2)] ${scrolled ? "text-black" : "text-white drop-shadow-sm"}`}
                 >
                   <Menu className="h-5 w-5" />
                 </Button>
