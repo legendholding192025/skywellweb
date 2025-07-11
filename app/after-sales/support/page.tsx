@@ -25,7 +25,7 @@ export default function Support() {
             <div className="bg-white rounded-lg shadow-lg p-8">
               <h3 className="text-xl font-semibold mb-4">Contact Information</h3>
               <div className="space-y-4 text-gray-600">
-                <p>📞 Phone: 1-800-SKYWELL</p>
+                <p>📞 Phone: 04 221 9958</p>
                 <p>✉️ Email: support@skywell.com</p>
                 <p>⏰ Hours: 24/7 Support</p>
               </div>
