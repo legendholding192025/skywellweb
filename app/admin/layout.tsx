@@ -56,11 +56,6 @@ const navItems = [
     href: "/admin/newsletter",
     icon: Mail,
   },
-  {
-    title: "Blog Posts",
-    href: "/admin/blogs",
-    icon: FileText,
-  },
 ]
 
 export default function AdminRootLayout({

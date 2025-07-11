@@ -51,13 +51,6 @@ const statCards = [
     icon: Mail,
     color: 'bg-yellow-500',
     key: 'newsletter'
-  },
-  {
-    title: 'Blog Posts',
-    href: '/admin/blogs',
-    icon: FileText,
-    color: 'bg-red-500',
-    key: 'blogs'
   }
 ];
 

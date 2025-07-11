@@ -64,11 +64,6 @@ const navItems: NavItem[] = [
     icon: Mail,
   },
   {
-    title: "Blog Posts",
-    href: "/admin/blogs",
-    icon: FileText,
-  },
-  {
     title: "Offers",
     href: "/admin/offers",
     icon: Gift,

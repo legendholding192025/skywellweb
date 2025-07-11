@@ -17,18 +17,6 @@ export function ContactSection() {
             Have questions about Skywell electric vehicles? Reach out to our team for assistance with sales, service, or general inquiries.
           </p>
         </div>
-
-        {/* About Legend Motors */}
-        <div className={`mb-12 p-8 rounded-xl ${isDark ? "bg-gray-900" : "bg-gray-50"}`}>
-          <h2 className={`text-2xl font-bold mb-4 ${isDark ? "text-white" : "text-black"}`}>About Legend Motors</h2>
-          <p className={`text-lg leading-relaxed ${isDark ? "text-gray-300" : "text-gray-600"}`}>
-            Established here in the UAE for over 15 years, Legend Holding Group is a multi-disciplined with the customer at the heart of everything we do. 
-            With business interests from Automotives, Tourism, Rent-A-Car, Energy and Chemicals, we are well placed at the heart of the UAE community.
-          </p>
-          <p className={`text-lg mt-4 leading-relaxed ${isDark ? "text-gray-300" : "text-gray-600"}`}>
-            Legend Motors is the exclusive distributor for Skywell new energy electric vehicles in Dubai, Geely Commercial Electric Vehicles and Wuling Motors in the UAE.
-          </p>
-        </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* Contact Information */}
@@ -55,7 +43,7 @@ export function ContactSection() {
                     Phone & WhatsApp
                   </h4>
                   <p className="opacity-90">
-                    <a href="tel:+97145485633" className="hover:underline">+971 4 548 5633</a>
+                    <a href="tel:+97145485633" className="hover:underline">04 221 9958</a>
                   </p>
                 </div>
                 

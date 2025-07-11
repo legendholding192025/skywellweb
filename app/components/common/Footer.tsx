@@ -25,11 +25,6 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/blogs" className="text-muted-foreground hover:text-primary transition-colors">
-                  Blog
-                </Link>
-              </li>
-              <li>
                 <Link href="/contact" className="text-muted-foreground hover:text-primary transition-colors">
                   Contact
                 </Link>

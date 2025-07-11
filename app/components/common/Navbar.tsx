@@ -23,9 +23,6 @@ export function Navbar() {
             <Link href="/" className="hover:text-primary transition-colors duration-300">
               Home
             </Link>
-            <Link href="/blogs" className="hover:text-primary transition-colors duration-300">
-              Blog
-            </Link>
             <Link href="/contact" className="hover:text-primary transition-colors duration-300">
               Contact
             </Link>
@@ -55,9 +52,6 @@ export function Navbar() {
                 <div className="flex flex-col space-y-4 mt-8">
                   <Link href="/" className="text-lg font-medium hover:text-primary transition-colors">
                     Home
-                  </Link>
-                  <Link href="/blogs" className="text-lg font-medium hover:text-primary transition-colors">
-                    Blog
                   </Link>
                   <Link href="/contact" className="text-lg font-medium hover:text-primary transition-colors">
                     Contact

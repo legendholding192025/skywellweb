@@ -8,7 +8,6 @@ import { DesignSection } from "@/components/home/design-section"
 import { ExploreSection } from "@/components/home/explore-section"
 import { Footer } from "@/components/common/footer"
 import { WhyChooseSection } from "@/components/home/why-choose-section"
-import { NewsSection } from "@/components/home/news-section"
 
 export default function Home() {
   return (
@@ -17,7 +16,6 @@ export default function Home() {
       <HeroSection />
       <ExploreSection />
       <WhyChooseSection />
-      <NewsSection />
       <Footer />
     </div>
   )

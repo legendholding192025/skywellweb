@@ -78,7 +78,6 @@ export function Navbar() {
         }
       ]
     },
-    { name: "Blogs", href: "/blogs" },
     { name: "Contact", href: "/contact-us" },
   ]
 
