@@ -142,16 +142,6 @@ export function Footer() {
               <ul className="space-y-3">
                 <li>
                   <Link
-                    href="/about-us"
-                    className={`text-sm ${
-                      isDark ? "text-gray-300 hover:text-white" : "text-gray-600 hover:text-black"
-                    } hover:underline transition-colors duration-200`}
-                  >
-                    About Us
-                  </Link>
-                </li>
-                <li>
-                  <Link
                     href="/blogs"
                     className={`text-sm ${
                       isDark ? "text-gray-300 hover:text-white" : "text-gray-600 hover:text-black"
