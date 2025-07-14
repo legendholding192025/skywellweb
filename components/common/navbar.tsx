@@ -283,7 +283,7 @@ export function Navbar() {
 
           {/* Right side buttons */}
           <div className="flex items-center">
-            <Link href="tel:04-221-9958">
+            <Link href="tel:+9714-221-9958">
               <Button
                 variant="ghost"
                 className={`text-sm font-medium mr-3 hidden md:flex items-center gap-2 hover:bg-[rgba(74,156,214,0.2)] group transition-all ${
@@ -292,7 +292,7 @@ export function Navbar() {
               >
                 <Phone className="h-4 w-4 group-hover:animate-wiggle" />
                 <span className="relative after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-current after:transition-all group-hover:after:w-full">
-                  04 221 9958
+                  +971 4 221 9958
                 </span>
               </Button>
             </Link>
