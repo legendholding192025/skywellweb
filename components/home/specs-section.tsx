@@ -338,10 +338,14 @@ export function SpecsSection() {
               transition={{ delay: 1 }}
               className="absolute bottom-4 right-4"
             >
-              <button className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#4a9cd6] text-white text-sm font-medium hover:bg-[#2d7eb3] transition-colors shadow-lg">
+              <a
+                href="/downloads/Skywell-ET5-Full-Specifications.pdf"
+                download="Skywell-ET5-Full-Specifications.pdf"
+                className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#4a9cd6] text-white text-sm font-medium hover:bg-[#2d7eb3] transition-colors shadow-lg"
+              >
                 <Download className="w-4 h-4" />
                 <span>Download Full Specs</span>
-              </button>
+              </a>
             </motion.div>
           </motion.div>
         </div>
