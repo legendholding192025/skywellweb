@@ -173,7 +173,7 @@ export function FeatureSection() {
               className="relative h-full w-full"
             >
               <Image
-                src="https://res.cloudinary.com/dckrspiqe/image/upload/v1745837231/skywell_img-car-km-01_waz8sk.png"
+                src="https://cdn.legendholding.com/images/cdn_68749cd46b0695.08392751_20250714_055948.png"
                 alt="Skywell ET5"
                 fill
                 className="object-contain"
@@ -216,7 +216,7 @@ export function FeatureSection() {
               className="relative h-full w-full"
             >
               <Image
-                src="https://res.cloudinary.com/dckrspiqe/image/upload/v1745837231/skywell_img-car-km-01_waz8sk.png"
+                src="https://cdn.legendholding.com/images/cdn_68749cd46b0695.08392751_20250714_055948.png"
                 alt="Skywell ET5"
                 fill
                 className="object-contain"

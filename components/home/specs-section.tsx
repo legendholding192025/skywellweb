@@ -296,7 +296,7 @@ export function SpecsSection() {
             <div className="relative h-full w-full">
               <div className="absolute inset-0 bg-gradient-to-r from-[#4a9cd6]/20 to-transparent rounded-3xl blur-2xl transform -rotate-3" />
               <Image
-                src="https://res.cloudinary.com/dckrspiqe/image/upload/v1745836815/Skywell-HT_i_1303_Edit-_vwoihj.png"
+                src="https://cdn.legendholding.com/images/cdn_6874a7c46c9333.25086062_20250714_064628.png"
                 alt="Skywell ET5 Side View"
                 fill
                 className="object-contain"

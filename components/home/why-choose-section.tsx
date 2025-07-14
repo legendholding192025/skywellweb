@@ -136,7 +136,7 @@ export function WhyChooseSection() {
             transition={{ duration: 0.7 }}
             className="relative h-[400px] md:h-[600px] rounded-3xl overflow-hidden"
           >
-            <Image src="https://res.cloudinary.com/dckrspiqe/image/upload/v1745843638/Skywell-et5-lr-10_result_c7w5j6.jpg" alt="Skywell Showroom" fill className="object-cover" priority />
+            <Image src="https://cdn.legendholding.com/images/cdn_6874a8b945ff26.10763153_20250714_065033.jpg" alt="Skywell Showroom" fill className="object-cover" priority />
             <div className="absolute inset-0 bg-gradient-to-tr from-black/70 via-black/40 to-transparent" />
           </motion.div>
 
@@ -298,7 +298,7 @@ export function WhyChooseSection() {
               </div>
             </div>
             <div className="relative w-full md:w-1/3 aspect-square max-w-[300px]">
-              <Image src="https://res.cloudinary.com/dckrspiqe/image/upload/v1745844359/skywell-logo_yfkg37.svg" alt="Skywell Logo" fill className="object-contain" />
+              <Image src="/logo/skywell-logo.svg" alt="Skywell Logo" fill className="object-contain" />
             </div>
           </div>
         </motion.div>

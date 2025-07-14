@@ -423,7 +423,7 @@ export function TestDriveForm() {
                       <p className="text-sm opacity-70">Electric SUV with 450km range</p>
                     </div>
                     <div className="w-24 h-16 relative">
-                      <Image src="/sleek-electric-vehicle.png" alt="Skywell ET5" fill className="object-contain" />
+                      <Image src="https://cdn.legendholding.com/images/cdn_68749cd46b0695.08392751_20250714_055948.png" alt="Skywell ET5" fill className="object-contain" />
                     </div>
                   </div>
                 </div>

@@ -6,7 +6,8 @@ const nextConfig = {
       'images.unsplash.com',
       'i.imgur.com',
       'picsum.photos',
-      'via.placeholder.com'
+      'via.placeholder.com',
+      'cdn.legendholding.com'
     ],
   },
   async headers() {

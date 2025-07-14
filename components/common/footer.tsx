@@ -103,7 +103,7 @@ export function Footer() {
           <div className="space-y-6">
             <Link href="/" className="inline-block">
               <Image 
-                src="https://res.cloudinary.com/dckrspiqe/image/upload/v1745844359/skywell-logo_yfkg37.svg"
+                src="/logo/skywell-logo.svg"
                 alt="Skywell"
                 width={120}
                 height={30}

@@ -19,7 +19,7 @@ export function ExploreSection() {
     {
       title: "Electric Innovation",
       icon: <Battery className="w-5 h-5" />,
-      image: "https://res.cloudinary.com/dckrspiqe/image/upload/v1745840392/IMG_04001_1_tgz1r8.jpg",
+      image: "https://cdn.legendholding.com/images/cdn_6874a889c85675.25089476_20250714_064945.jpg",
       content: {
         heading: "Electric Innovation",
         description:
@@ -29,7 +29,7 @@ export function ExploreSection() {
     {
       title: "Smart Technology",
       icon: <Cpu className="w-5 h-5" />,
-      image: "https://res.cloudinary.com/dckrspiqe/image/upload/v1745840392/IMG_04001_1_tgz1r8.jpg",
+      image: "https://cdn.legendholding.com/images/cdn_6874a7d6a8e306.72600907_20250714_064646.jpg",
       content: {
         heading: "Smart Technology",
         description:
@@ -39,7 +39,7 @@ export function ExploreSection() {
     {
       title: "Premium Design",
       icon: <Car className="w-5 h-5" />,
-      image: "https://res.cloudinary.com/dckrspiqe/image/upload/v1745840656/Skywell-Ulu-Motor-ile-Turkiyede-_xvoaux.jpg",
+      image: "https://cdn.legendholding.com/images/cdn_6874a81e22ea64.75000734_20250714_064758.jpg",
       content: {
         heading: "Premium Design",
         description:
@@ -49,7 +49,7 @@ export function ExploreSection() {
     {
       title: "Exceptional Value",
       icon: <Battery className="w-5 h-5" />,
-      image: "https://res.cloudinary.com/dckrspiqe/image/upload/v1745836815/Skywell-HT_i_1303_Edit-_vwoihj.png",
+      image: "https://cdn.legendholding.com/images/cdn_6874a7c46c9333.25086062_20250714_064628.png",
       content: {
         heading: "Exceptional Value",
         description:
@@ -59,7 +59,7 @@ export function ExploreSection() {
     {
       title: "Trusted Support in the UAE",
       icon: <Wrench className="w-5 h-5" />,
-      image: "https://res.cloudinary.com/dckrspiqe/image/upload/v1745837231/skywell_img-car-km-01_waz8sk.png",
+      image: "https://cdn.legendholding.com/images/cdn_68749cd46b0695.08392751_20250714_055948.png",
       content: {
         heading: "Trusted Support in the UAE",
         description:

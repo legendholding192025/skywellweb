@@ -26,9 +26,7 @@ export function Navbar() {
   const pathname = usePathname()
   const router = useRouter()
   const [scrolled, setScrolled] = useState(false)
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [hoverStyle, setHoverStyle] = useState({ left: "0px", width: "0px", opacity: 0 })
+  const [activeIndex, setActiveIndex] = useState(-1)
   const [activeStyle, setActiveStyle] = useState({ left: "0px", width: "0px" })
   const [imageError, setImageError] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
@@ -41,7 +39,7 @@ export function Navbar() {
         { 
           name: "ET5", 
           href: "/models/et5",
-          image: "https://res.cloudinary.com/dckrspiqe/image/upload/v1745837231/skywell_img-car-km-01_waz8sk.png",
+          image: "https://cdn.legendholding.com/images/cdn_68749cd46b0695.08392751_20250714_055948.png",
           description: "Premium Electric SUV"
         }
       ]
@@ -81,7 +79,13 @@ export function Navbar() {
     { name: "Contact", href: "/contact-us" },
   ]
 
-  const tabRefs = useRef<(HTMLDivElement | null)[]>(Array(navigation.length + 1).fill(null))
+  // Action items that appear on the right side
+  const actionItems = [
+    { name: "Get a Quote", href: "/get-quote" },
+    { name: "Book a Test Drive", href: "/test-drive" },
+  ]
+
+  const tabRefs = useRef<(HTMLDivElement | null)[]>(Array(navigation.length + actionItems.length).fill(null))
 
   // Set mounted state
   useEffect(() => {
@@ -91,44 +95,51 @@ export function Navbar() {
   // Set active index based on current pathname only after mounting
   useEffect(() => {
     if (isMounted) {
-      const currentIndex = navigation.findIndex((item) => item.href === pathname)
-      if (currentIndex !== -1) {
-        setActiveIndex(currentIndex)
+      // Check main navigation items first
+      const navIndex = navigation.findIndex((item) => {
+        // Check for exact match first
+        if (item.href === pathname) return true
+        
+        // Check if pathname starts with the item's href (for submenu items)
+        if (item.submenu && pathname.startsWith(item.href)) return true
+        
+        return false
+      })
+      
+      if (navIndex !== -1) {
+        setActiveIndex(navIndex)
+      } else {
+        // Check action items
+        const actionIndex = actionItems.findIndex((item) => item.href === pathname)
+        if (actionIndex !== -1) {
+          setActiveIndex(navigation.length + actionIndex)
+        } else {
+          setActiveIndex(-1)
+        }
       }
     }
   }, [pathname, isMounted])
 
-  // Update hover style only after component is mounted
-  useEffect(() => {
-    if (isMounted && hoveredIndex !== null) {
-      // Add small delay to avoid rapid hover changes
-      const timer = setTimeout(() => {
-      const hoveredElement = tabRefs.current[hoveredIndex]
-      if (hoveredElement) {
-        const { offsetLeft, offsetWidth } = hoveredElement
-        setHoverStyle({
-          left: `${offsetLeft}px`,
-          width: `${offsetWidth}px`,
-          opacity: 1
-        })
-      }
-      }, 5);
-      return () => clearTimeout(timer);
-    } else {
-      setHoverStyle({ left: "0px", width: "0px", opacity: 0 })
-    }
-  }, [hoveredIndex, isMounted])
+
 
   // Update active indicator style only after component is mounted
   useEffect(() => {
     if (isMounted) {
-      const activeElement = tabRefs.current[activeIndex]
-      if (activeElement) {
-        const { offsetLeft, offsetWidth } = activeElement
+      if (activeIndex === -1) {
+        // Hide active indicator when no nav item is active
         setActiveStyle({
-          left: `${offsetLeft}px`,
-          width: `${offsetWidth}px`,
+          left: "0px",
+          width: "0px",
         })
+      } else {
+        const activeElement = tabRefs.current[activeIndex]
+        if (activeElement) {
+          const { offsetLeft, offsetWidth } = activeElement
+          setActiveStyle({
+            left: `${offsetLeft}px`,
+            width: `${offsetWidth}px`,
+          })
+        }
       }
     }
   }, [activeIndex, isMounted])
@@ -150,6 +161,8 @@ export function Navbar() {
       window.removeEventListener("scroll", handleScroll)
     }
   }, [isMounted])
+
+
 
   // If not yet mounted, render a simple placeholder
   if (!isMounted) {
@@ -179,7 +192,7 @@ export function Navbar() {
           <Link href="/" className="relative z-10">
             {!imageError ? (
               <Image
-                src="https://res.cloudinary.com/dckrspiqe/image/upload/v1745844359/skywell-logo_yfkg37.svg"
+                src="/logo/skywell-logo.svg"
                 alt="Skywell"
                 width={100}
                 height={24}
@@ -195,15 +208,9 @@ export function Navbar() {
           {/* Desktop Navigation with hover effects */}
           <div className="hidden md:block">
             <div className="relative flex items-center space-x-1">
-              {/* Hover Highlight */}
-              <div
-                className="absolute h-[30px] transition-all duration-300 ease-out bg-[rgba(74,156,214,0.1)] rounded-[6px] flex items-center pointer-events-none"
-                style={hoverStyle}
-              />
-
               {/* Active Indicator */}
               <div
-                className="absolute bottom-[-6px] h-[2px] bg-[#4a9cd6] transition-all duration-300 ease-out pointer-events-none"
+                className="absolute bottom-[-6px] h-[2px] bg-[#4a9cd6] pointer-events-none"
                 style={activeStyle}
               />
 
@@ -218,14 +225,13 @@ export function Navbar() {
                     index === activeIndex
                       ? "text-[#4a9cd6]"
                       : scrolled 
-                        ? "text-black opacity-80 hover:opacity-100"
-                        : "text-white opacity-90 hover:opacity-100 drop-shadow-sm"
+                        ? "text-black opacity-80 hover:text-[#4a9cd6]"
+                        : "text-white opacity-90 hover:text-[#4a9cd6] drop-shadow-sm"
                   }`}
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}
+
                 >
                   {item.submenu ? (
-                    <DropdownMenu>
+                    <DropdownMenu modal={false}>
                       <DropdownMenuTrigger asChild>
                         <div className="text-sm font-medium whitespace-nowrap flex items-center justify-center h-full">
                           {item.name} <ChevronDown className="ml-1 h-3 w-3" />
@@ -296,27 +302,31 @@ export function Navbar() {
               </Button>
             </Link>
 
-            <Link href="/get-quote">
-              <Button
-                variant="ghost"
-                className={`text-sm font-medium mr-4 hidden md:flex hover:bg-[rgba(74,156,214,0.2)] transition-colors ${
-                  scrolled ? "text-black opacity-80 hover:opacity-100" : "text-white opacity-90 hover:opacity-100 drop-shadow-sm"
-                }`}
-              >
-                Get a Quote
-              </Button>
-            </Link>
+            {/* Action Items - Get Quote and Book Test Drive */}
+            {actionItems.map((item, index) => {
+              const actualIndex = navigation.length + index
+              return (
+                <div
+                  key={`action-item-${index}`}
+                  ref={(el: HTMLDivElement | null) => {
+                    tabRefs.current[actualIndex] = el
+                  }}
+                  className={`px-3 py-2 cursor-pointer transition-colors duration-300 h-[30px] hidden md:flex items-center justify-center mr-4 ${
+                    actualIndex === activeIndex
+                      ? "text-[#4a9cd6]"
+                      : scrolled 
+                        ? "text-black opacity-80 hover:text-[#4a9cd6]"
+                        : "text-white opacity-90 hover:text-[#4a9cd6] drop-shadow-sm"
+                  }`}
 
-            <Link href="/test-drive">
-              <Button
-                variant="ghost"
-                className={`text-sm font-medium mr-4 hidden md:flex hover:bg-[rgba(74,156,214,0.2)] transition-colors ${
-                  scrolled ? "text-black opacity-80 hover:opacity-100" : "text-white opacity-90 hover:opacity-100 drop-shadow-sm"
-                }`}
-              >
-                Book a Test Drive
-              </Button>
-            </Link>
+                  onClick={() => router.push(item.href)}
+                >
+                  <div className="text-sm font-medium whitespace-nowrap">
+                    {item.name}
+                  </div>
+                </div>
+              )
+            })}
 
             {/* Mobile menu button */}
             <Sheet>
@@ -337,7 +347,7 @@ export function Navbar() {
                   <div className="flex items-center justify-between py-4">
                     {!imageError ? (
                       <Image
-                        src="https://res.cloudinary.com/dckrspiqe/image/upload/v1745844359/skywell-logo_yfkg37.svg"
+                        src="/logo/skywell-logo.svg"
                         alt="Skywell"
                         width={100}
                         height={24}
@@ -373,7 +383,7 @@ export function Navbar() {
                                   className={`block text-base ${
                                     pathname === subItem.href
                                       ? "text-[#4a9cd6]"
-                                      : "text-black/70 hover:text-black"
+                                      : "text-black/70 hover:text-[#4a9cd6]"
                                   }`}
                                 >
                                   {subItem.name}
@@ -387,7 +397,7 @@ export function Navbar() {
                             className={`text-lg font-medium ${
                               pathname === item.href
                                 ? "text-[#4a9cd6]"
-                                : "text-black opacity-80 hover:opacity-100"
+                                : "text-black opacity-80 hover:text-[#4a9cd6]"
                             }`}
                           >
                             {item.name}
@@ -395,18 +405,21 @@ export function Navbar() {
                         )}
                       </div>
                     ))}
-                    <Link
-                      href="/get-quote"
-                      className="text-lg font-medium text-black opacity-80 hover:opacity-100"
-                    >
-                      Get a Quote
-                    </Link>
-                    <Link
-                      href="/test-drive"
-                      className="text-lg font-medium text-black opacity-80 hover:opacity-100"
-                    >
-                      Book a Test Drive
-                    </Link>
+                    {/* Action Items in Mobile Menu */}
+                    {actionItems.map((item) => (
+                      <div key={`mobile-action-${item.name}`}>
+                        <Link
+                          href={item.href}
+                          className={`text-lg font-medium ${
+                            pathname === item.href
+                              ? "text-[#4a9cd6]"
+                              : "text-black opacity-80 hover:text-[#4a9cd6]"
+                          }`}
+                        >
+                          {item.name}
+                        </Link>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </SheetContent>
