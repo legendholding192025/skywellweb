@@ -34,7 +34,7 @@ const serviceCenter = {
   id: "rasalkhor",
   name: "Ras Al Khor Service Center",
   address: "Ras Al Khor Industrial Area, Dubai, UAE",
-  phone: "+971 4 234 5678",
+  phone: "+971 4 221 9958",
   email: "skywell@legendmotorsuae.com",
   hours: "Mon-Sat: 9:00 AM - 7:00 PM"
 }
