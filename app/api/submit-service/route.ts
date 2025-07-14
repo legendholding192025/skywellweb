@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import ServiceBooking from '@/models/ServiceBooking';
+import { sendServiceBookingNotification } from '@/lib/email';
 
 export async function POST(req: Request) {
   try {
@@ -9,6 +10,15 @@ export async function POST(req: Request) {
     await connectDB();
     
     const newBooking = await ServiceBooking.create(body);
+    
+    // Send email notification to admin
+    try {
+      await sendServiceBookingNotification(body);
+      console.log("Service booking notification email sent successfully");
+    } catch (emailError) {
+      console.error("Error sending service booking notification email:", emailError);
+      // Continue with response even if email fails
+    }
     
     return NextResponse.json(
       { message: 'Service booking created successfully', booking: newBooking },

@@ -88,6 +88,119 @@ export default function ET5Page() {
       {/* Specs Section */}
       <SpecsSection />
 
+      {/* Gallery Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          {/* Exterior Section */}
+          <div className="mb-16">
+            <h2 className="text-4xl font-bold text-center mb-12 text-gray-900">
+              Exterior
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* Exterior Images */}
+              <div className="aspect-[4/3] rounded-lg overflow-hidden shadow-lg">
+                <img 
+                  src="https://cdn.legendholding.com/images/cloudinary_6874f48f640194.11823816_20250714_121407.webp"
+                  alt="Skywell ET5 - Rear View"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="aspect-[4/3] rounded-lg overflow-hidden shadow-lg">
+                <img 
+                  src="https://cdn.legendholding.com/images/cloudinary_6874f4a9cc0c95.35931803_20250714_121433.webp"
+                  alt="Skywell ET5 - Side View"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="aspect-[4/3] rounded-lg overflow-hidden shadow-lg">
+                <img 
+                  src="https://cdn.legendholding.com/images/cloudinary_6874f4b997f796.60691145_20250714_121449.webp"
+                  alt="Skywell ET5 - Front View"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="aspect-[4/3] rounded-lg overflow-hidden shadow-lg">
+                <img 
+                  src="https://cdn.legendholding.com/images/cloudinary_6874f4d1accba0.04059496_20250714_121513.webp"
+                  alt="Skywell ET5 - Three Quarter View"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+            </div>
+            
+            {/* Second Row of Exterior Images */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+              <div className="aspect-[4/3] rounded-lg overflow-hidden shadow-lg">
+                <img 
+                  src="https://cdn.legendholding.com/images/cloudinary_6874f4e7dbd751.64460216_20250714_121535.webp"
+                  alt="Skywell ET5 - Charging Port"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="aspect-[4/3] rounded-lg overflow-hidden shadow-lg">
+                <img 
+                  src="https://cdn.legendholding.com/images/cloudinary_6874f5063abfc6.43791859_20250714_121606.webp"
+                  alt="Skywell ET5 - Skywell Branding"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="aspect-[4/3] rounded-lg overflow-hidden shadow-lg">
+                <img 
+                  src="https://cdn.legendholding.com/images/cloudinary_6874f515c84b78.11677858_20250714_121621.jpg"
+                  alt="Skywell ET5 - Headlights"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="aspect-[4/3] rounded-lg overflow-hidden shadow-lg">
+                <img 
+                  src="https://cdn.legendholding.com/images/cloudinary_6874f54ca7f125.33678428_20250714_121716.webp"
+                  alt="Skywell ET5 - Wheel Detail"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Interior Section */}
+          <div>
+            <h2 className="text-4xl font-bold text-center mb-12 text-gray-900">
+              Interior
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* Interior Images */}
+              <div className="aspect-[4/3] rounded-lg overflow-hidden shadow-lg">
+                <img 
+                  src="https://cdn.legendholding.com/images/cloudinary/cloudinary_6874f7b24862e8.74200320_20250714_122730.webp"
+                  alt="Skywell ET5 - Dashboard"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="aspect-[4/3] rounded-lg overflow-hidden shadow-lg">
+                <img 
+                  src="https://cdn.legendholding.com/images/cloudinary/cloudinary_6874f7d85cbdf7.08587484_20250714_122808.jpg"
+                  alt="Skywell ET5 - Infotainment System"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="aspect-[4/3] rounded-lg overflow-hidden shadow-lg">
+                <img 
+                  src="https://cdn.legendholding.com/images/cloudinary/cloudinary_6874f7f8607861.10997396_20250714_122840.jpg"
+                  alt="Skywell ET5 - Panoramic Roof"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="aspect-[4/3] rounded-lg overflow-hidden shadow-lg">
+                <img 
+                  src="https://cdn.legendholding.com/images/cloudinary/cloudinary_6874f810d43285.26832725_20250714_122904.jpg"
+                  alt="Skywell ET5 - Interior Space"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </div>
   )

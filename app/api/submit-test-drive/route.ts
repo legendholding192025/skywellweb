@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import TestDrive from '@/models/TestDrive';
+import { sendTestDriveNotification } from '@/lib/email';
 
 // The external API endpoint
 const CRM_API_URL = 'https://lmmta.legendholding.com/CRM_IS/rest/RESTAPIDealerShip/RESTAPI_WEB';
@@ -15,7 +16,7 @@ export async function POST(request: Request) {
     // First save to our database
     try {
       await connectDB();
-      await TestDrive.create({
+      const testDriveData = {
         name: body.CustomerName,
         email: body.Email,
         phone: body.MobileNumber,
@@ -29,8 +30,19 @@ export async function POST(request: Request) {
         utmMedium: body.AdditionalInformation?.match(/UTM Medium: ([^\s]+)/)?.[1] || null,
         utmCampaign: body.AdditionalInformation?.match(/UTM Campaign: ([^\s]+)/)?.[1] || null,
         utmContent: body.AdditionalInformation?.match(/UTM Content: ([^\s]+)/)?.[1] || null,
-      });
+      };
+      
+      await TestDrive.create(testDriveData);
       console.log("Saved to local database successfully");
+      
+      // Send email notification to admin
+      try {
+        await sendTestDriveNotification(testDriveData);
+        console.log("Test drive notification email sent successfully");
+      } catch (emailError) {
+        console.error("Error sending test drive notification email:", emailError);
+        // Continue with CRM submission even if email fails
+      }
     } catch (dbError) {
       console.error("Error saving to local database:", dbError);
       // Continue with CRM submission even if local save fails
