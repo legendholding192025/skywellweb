@@ -483,30 +483,7 @@ export function SpecsSection() {
                             </div>
                           )}
 
-                          {/* Interactive elements in expanded view */}
-                          <div className="flex flex-wrap gap-4">
-                            <button
-                              className={`px-4 py-2 rounded-full text-sm flex items-center gap-2 transition-colors ${
-                                isDark
-                                  ? "bg-[#4a9cd6] text-white hover:bg-[#2d7eb3]"
-                                  : "bg-[#4a9cd6] text-white hover:bg-[#2d7eb3]"
-                              }`}
-                            >
-                              <ArrowRight className="w-4 h-4" />
-                              <span>Learn more</span>
-                            </button>
 
-                            <button
-                              className={`px-4 py-2 rounded-full text-sm flex items-center gap-2 ${
-                                isDark
-                                  ? "bg-white/10 text-white hover:bg-white/15"
-                                  : "bg-black/10 text-black hover:bg-black/15"
-                              }`}
-                            >
-                              <Download className="w-4 h-4" />
-                              <span>Download details</span>
-                            </button>
-                          </div>
                         </div>
                       </motion.div>
                     )}

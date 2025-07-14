@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { Navbar } from "@/components/common/navbar"
 import { Footer } from "@/components/common/footer"
 import { FeatureSection } from "@/components/home/feature-section"
@@ -34,12 +35,16 @@ export default function ET5Page() {
                 Combining cutting-edge technology with elegant design.
               </p>
               <div className="flex flex-wrap gap-4">
-                <button className="bg-blue-600 text-white px-8 py-3 rounded-full font-medium hover:bg-blue-700 transition-colors">
-                  Configure Yours
-                </button>
-                <button className="bg-white/20 backdrop-blur-sm text-white px-8 py-3 rounded-full font-medium hover:bg-white/30 transition-colors">
-                  Book Test Drive
-                </button>
+                <Link href="/test-drive">
+                  <button className="bg-white/20 backdrop-blur-sm text-white px-8 py-3 rounded-full font-medium hover:bg-white/30 transition-colors">
+                    Book Test Drive
+                  </button>
+                </Link>
+                <Link href="https://www.720yun.com/t/65vktm1qs1h?scene_id=75958446" target="_blank" rel="noopener noreferrer">
+                  <button className="bg-transparent border-2 border-white/40 backdrop-blur-sm text-white px-8 py-3 rounded-full font-medium hover:bg-white/10 transition-colors">
+                    View 360°
+                  </button>
+                </Link>
               </div>
 
               {/* Key Specs */}

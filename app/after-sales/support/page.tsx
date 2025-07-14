@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Navbar } from "@/components/common/navbar"
 import { Footer } from "@/components/common/footer"
@@ -16,8 +17,12 @@ export default function Support() {
               Our dedicated support team is here to assist you with any questions or concerns about your Skywell vehicle.
             </p>
             <div className="flex gap-4">
-              <Button>Contact Support</Button>
-              <Button variant="outline">View FAQs</Button>
+              <Link href="/contact-us">
+                <Button>Contact Support</Button>
+              </Link>
+              <Link href="/faq">
+                <Button variant="outline">View FAQs</Button>
+              </Link>
             </div>
           </div>
 
@@ -26,7 +31,7 @@ export default function Support() {
               <h3 className="text-xl font-semibold mb-4">Contact Information</h3>
               <div className="space-y-4 text-gray-600">
                 <p>📞 Phone: 04 221 9958</p>
-                <p>✉️ Email: support@skywell.com</p>
+                <p>✉️ Email: skywell@legendmotorsuae.com</p>
                 <p>⏰ Hours: 24/7 Support</p>
               </div>
             </div>

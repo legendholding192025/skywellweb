@@ -68,11 +68,6 @@ export function Navbar() {
           name: "Finance Calculator",
           href: "/finance/calculator",
           description: "Estimate your monthly payments"
-        },
-        {
-          name: "Special Offers",
-          href: "/finance/offers",
-          description: "View current deals and promotions"
         }
       ]
     },

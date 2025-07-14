@@ -505,12 +505,12 @@ export function GetQuoteForm() {
             <p className="text-sm opacity-80">
               Need assistance? Contact us at:
               <br />
-              <a href="tel:+97142345678" className="text-[#4a9cd6] hover:underline">
-                +971 4 234 5678
+              <a href="tel:+97142219958" className="text-[#4a9cd6] hover:underline">
+                +971 4 221 9958
               </a>{" "}
               or{" "}
-              <a href="mailto:marketing@skywell-uae.com" className="text-[#4a9cd6] hover:underline">
-                marketing@skywell-uae.com
+              <a href="mailto:skywell@legendmotorsuae.com" className="text-[#4a9cd6] hover:underline">
+                skywell@legendmotorsuae.com
               </a>
             </p>
           </div>

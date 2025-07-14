@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Navbar } from "@/components/common/navbar"
 import { Footer } from "@/components/common/footer"
@@ -16,7 +17,9 @@ export default function ServiceCenter() {
               Keep your Skywell vehicle in perfect condition with our professional service center.
               Our expert technicians are trained to provide the highest quality service for your electric vehicle.
             </p>
-            <Button>Book Service Appointment</Button>
+            <Link href="/services">
+              <Button>Book Service Appointment</Button>
+            </Link>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">

@@ -7,7 +7,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
 import { useTheme } from "next-themes"
-import { Facebook, Twitter, Instagram, Linkedin, Youtube, ArrowRight, Mail } from "lucide-react"
+import { Facebook, Instagram, Linkedin, ArrowRight, Mail, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast"
@@ -22,6 +22,7 @@ export function Footer() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isMounted, setIsMounted] = useState(false)
+  const [isModelsDropdownOpen, setIsModelsDropdownOpen] = useState(false)
 
   // Only set theme after component is mounted on client
   useEffect(() => {
@@ -35,6 +36,24 @@ export function Footer() {
       setIsDark(resolvedTheme === "dark")
     }
   }, [resolvedTheme, isMounted])
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement
+      if (!target.closest('.models-dropdown')) {
+        setIsModelsDropdownOpen(false)
+      }
+    }
+
+    if (isModelsDropdownOpen) {
+      document.addEventListener('click', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [isModelsDropdownOpen])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -78,11 +97,17 @@ export function Footer() {
   }
 
   const socialLinks = [
-    { name: "Facebook", icon: Facebook, href: "https://facebook.com" },
-    { name: "Twitter", icon: Twitter, href: "https://twitter.com" },
-    { name: "Instagram", icon: Instagram, href: "https://instagram.com" },
-    { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com" },
-    { name: "YouTube", icon: Youtube, href: "https://youtube.com" },
+    { name: "Facebook", icon: Facebook, href: "https://www.facebook.com/Skywell-UAE-102502049232551/" },
+    { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/skywell_uae/" },
+    { name: "LinkedIn", icon: Linkedin, href: "https://www.linkedin.com/company/skywell-uae/" },
+  ]
+
+  const models = [
+    { 
+      name: "ET5", 
+      href: "/models/et5",
+      description: "Premium Electric SUV"
+    }
   ]
 
   // Return a placeholder while component is mounting
@@ -140,15 +165,53 @@ export function Footer() {
             <div className="space-y-4">
               <h3 className={`text-lg font-medium ${isDark ? "text-white" : "text-black"}`}>Company</h3>
               <ul className="space-y-3">
-                <li>
-                  <Link
-                    href="/models"
-                    className={`text-sm ${
-                      isDark ? "text-gray-300 hover:text-white" : "text-gray-600 hover:text-black"
-                    } hover:underline transition-colors duration-200`}
-                  >
-                    Our Models
-                  </Link>
+                <li className="relative">
+                  <div className="relative models-dropdown">
+                    <button
+                      onClick={() => setIsModelsDropdownOpen(!isModelsDropdownOpen)}
+                      className={`text-sm flex items-center gap-1 ${
+                        isDark ? "text-gray-300 hover:text-white" : "text-gray-600 hover:text-black"
+                      } hover:underline transition-colors duration-200`}
+                    >
+                      Our Models
+                      <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${
+                        isModelsDropdownOpen ? 'rotate-180' : ''
+                      }`} />
+                    </button>
+                    
+                    {isModelsDropdownOpen && (
+                      <div className={`absolute left-0 top-full mt-2 w-48 rounded-lg shadow-lg border z-10 ${
+                        isDark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
+                      }`}>
+                        <div className="py-2">
+                          <Link
+                            href="/models"
+                            className={`block px-4 py-2 text-sm font-medium ${
+                              isDark ? "text-gray-200 hover:text-white hover:bg-gray-700" : "text-gray-700 hover:text-black hover:bg-gray-50"
+                            } transition-colors duration-200`}
+                          >
+                            All Models
+                          </Link>
+                          {models.map((model) => (
+                            <Link
+                              key={model.name}
+                              href={model.href}
+                              className={`block px-4 py-2 text-sm ${
+                                isDark ? "text-gray-300 hover:text-white hover:bg-gray-700" : "text-gray-600 hover:text-black hover:bg-gray-50"
+                              } transition-colors duration-200`}
+                            >
+                              <div>
+                                <div className="font-medium">{model.name}</div>
+                                <div className={`text-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}>
+                                  {model.description}
+                                </div>
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </li>
                 <li>
                   <Link
@@ -306,14 +369,6 @@ export function Footer() {
                 } transition-colors duration-200`}
               >
                 Privacy Policy
-              </Link>
-              <Link
-                href="/terms"
-                className={`text-sm ${
-                  isDark ? "text-gray-400 hover:text-white" : "text-gray-600 hover:text-black"
-                } transition-colors duration-200`}
-              >
-                Terms of Service
               </Link>
             </div>
           </div>

@@ -241,10 +241,6 @@ export function FeatureSection() {
           transition={{ delay: 0.6 }}
           className="mt-6 sm:mt-8 text-center"
         >
-          <button className="inline-flex items-center justify-center px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-[#4a9cd6] to-[#2d7eb3] text-white text-sm sm:text-base font-medium shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
-            Book a Test Drive
-            <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 ml-1 transform group-hover:translate-x-1 transition-transform duration-300" />
-          </button>
         </motion.div>
       </div>
     </div>
