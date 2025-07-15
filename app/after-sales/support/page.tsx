@@ -35,16 +35,6 @@ export default function Support() {
                 <p>⏰ Hours: 24/7 Support</p>
               </div>
             </div>
-
-            <div className="bg-white rounded-lg shadow-lg p-8">
-              <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
-              <ul className="space-y-3 text-gray-600">
-                <li>• Owner's Manual</li>
-                <li>• Warranty Information</li>
-                <li>• Service Schedule</li>
-                <li>• Emergency Assistance</li>
-              </ul>
-            </div>
           </div>
         </div>
       </div>

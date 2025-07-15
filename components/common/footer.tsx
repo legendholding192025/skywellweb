@@ -184,14 +184,6 @@ export function Footer() {
                         isDark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
                       }`}>
                         <div className="py-2">
-                          <Link
-                            href="/models"
-                            className={`block px-4 py-2 text-sm font-medium ${
-                              isDark ? "text-gray-200 hover:text-white hover:bg-gray-700" : "text-gray-700 hover:text-black hover:bg-gray-50"
-                            } transition-colors duration-200`}
-                          >
-                            All Models
-                          </Link>
                           {models.map((model) => (
                             <Link
                               key={model.name}
