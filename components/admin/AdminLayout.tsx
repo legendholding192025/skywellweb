@@ -63,11 +63,6 @@ const navItems: NavItem[] = [
     href: "/admin/newsletter",
     icon: Mail,
   },
-  {
-    title: "Offers",
-    href: "/admin/offers",
-    icon: Gift,
-  },
 ]
 
 export default function AdminLayout({
