@@ -288,13 +288,15 @@ export function WhyChooseSection() {
                     <ChevronRight className="inline-block w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" />
                   </button>
                 </Link>
-                <button
+                <a
+                  href="/downloads/Skywell-ET5-Full-Specifications.pdf"
+                  download="Skywell-ET5-Full-Specifications.pdf"
                   className={`px-6 py-3 rounded-full font-medium ${
                     isDark ? "bg-white/10 text-white hover:bg-white/20" : "bg-black/5 text-gray-900 hover:bg-black/10"
-                  } transition-colors`}
+                  } transition-colors inline-flex items-center`}
                 >
                   Download Brochure
-                </button>
+                </a>
               </div>
             </div>
             <div className="relative w-full md:w-1/3 aspect-square max-w-[300px]">

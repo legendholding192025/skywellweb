@@ -77,8 +77,8 @@ export default function AdminLayout({
   const pathname = usePathname()
 
   useEffect(() => {
-    // Check if we're on login or register page
-    if (pathname === "/admin/login" || pathname === "/admin/register") {
+    // Check if we're on login page
+    if (pathname === "/admin/login") {
       setIsLoading(false)
       return
     }
