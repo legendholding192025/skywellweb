@@ -52,7 +52,7 @@ export function HeroSection() {
           muted
           loop
           playsInline
-          poster="https://res.cloudinary.com/dckrspiqe/image/upload/v1745844235/hero-poster_usdzyq.jpg"
+          poster="https://cdn.legendholding.com/images/cdn_6874a889c85675.25089476_20250714_064945.jpg"
         >
           <source src="https://cdn.legendholding.com/videos/video_cdn_68749be1932315.27786609_20250714_055545.mp4" type="video/mp4" />
           Your browser does not support the video tag.
