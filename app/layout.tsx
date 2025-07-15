@@ -11,7 +11,12 @@ export const metadata: Metadata = {
   title: "Skywell - Electric Vehicles",
   description:
     "Experience the next generation of sustainable transportation with Skywell's innovative electric vehicles.",
-    generator: 'v0.dev'
+  generator: 'v0.dev',
+  icons: {
+    icon: '/logo/skywell-favicon.svg',
+    shortcut: '/logo/skywell-favicon.svg',
+    apple: '/logo/skywell-favicon.svg',
+  },
 }
 
 export default function RootLayout({
