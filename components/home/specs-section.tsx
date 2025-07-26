@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { useTheme } from "next-themes"
 import Image from "next/image"
@@ -22,6 +22,11 @@ import {
   Wifi,
   Download,
   BarChart3,
+  X,
+  User,
+  Phone,
+  Mail,
+  ChevronDown,
 } from "lucide-react"
 
 export function SpecsSection() {
@@ -29,6 +34,13 @@ export function SpecsSection() {
   const [activeCategory, setActiveCategory] = useState("Performance")
   const [expandedSpec, setExpandedSpec] = useState<string | null>(null)
   const [hoveredSpec, setHoveredSpec] = useState<string | null>(null)
+  const [showPdfModal, setShowPdfModal] = useState(false)
+  const [formData, setFormData] = useState({
+    fullName: "",
+    phone: "",
+    email: "",
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -216,6 +228,86 @@ export function SpecsSection() {
     }
   }
 
+  // Handle form input changes
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    
+    if (name === "phone") {
+      // Only allow digits and limit to 9 characters
+      const numericValue = value.replace(/\D/g, '')
+      if (numericValue.length <= 9) {
+        setFormData(prev => ({
+          ...prev,
+          [name]: numericValue
+        }))
+      }
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }))
+    }
+  }
+
+
+
+  // Handle form submission
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+
+    try {
+      // Combine country code with phone number
+      const fullPhoneNumber = `+971${formData.phone}`
+      
+      // Send lead data to API
+      const response = await fetch('/api/submit-specs-lead', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          phone: fullPhoneNumber
+        }),
+      })
+
+      const result = await response.json()
+      
+      if (result.success) {
+        console.log("Lead captured successfully:", result)
+        
+        // Open PDF in new tab
+        window.open('/downloads/Skywell-ET5-Full-Specifications.pdf', '_blank')
+        
+        // Close modal and reset form
+        setShowPdfModal(false)
+        setFormData({ fullName: "", phone: "", email: "" })
+      } else {
+        console.error("Error capturing lead:", result)
+        // Still open PDF even if lead capture fails
+        window.open('/downloads/Skywell-ET5-Full-Specifications.pdf', '_blank')
+        setShowPdfModal(false)
+        setFormData({ fullName: "", phone: "", email: "" })
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error)
+      // Still open PDF even if there's an error
+      window.open('/downloads/Skywell-ET5-Full-Specifications.pdf', '_blank')
+      setShowPdfModal(false)
+      setFormData({ fullName: "", phone: "", email: "" })
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  // Handle PDF button click
+  const handlePdfButtonClick = () => {
+    setShowPdfModal(true)
+  }
+
+
+
   return (
     <div
       ref={containerRef}
@@ -338,14 +430,13 @@ export function SpecsSection() {
               transition={{ delay: 1 }}
               className="absolute bottom-4 right-4"
             >
-              <a
-                href="/downloads/Skywell-ET5-Full-Specifications.pdf"
-                download="Skywell-ET5-Full-Specifications.pdf"
+              <button
+                onClick={handlePdfButtonClick}
                 className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#4a9cd6] text-white text-sm font-medium hover:bg-[#2d7eb3] transition-colors shadow-lg"
               >
                 <Download className="w-4 h-4" />
-                <span>Download Full Specs</span>
-              </a>
+                <span>View Full Specs</span>
+              </button>
             </motion.div>
           </motion.div>
         </div>
@@ -550,6 +641,169 @@ export function SpecsSection() {
           </button>
         </div>
       </motion.div>
+
+      {/* PDF Access Modal */}
+      <AnimatePresence>
+        {showPdfModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setShowPdfModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className={`relative w-full max-w-md p-6 rounded-2xl shadow-2xl ${
+                isDark ? "bg-gray-900" : "bg-white"
+              }`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close button */}
+              <button
+                onClick={() => setShowPdfModal(false)}
+                className={`absolute top-4 right-4 p-2 rounded-full transition-colors ${
+                  isDark ? "hover:bg-white/10" : "hover:bg-black/10"
+                }`}
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {/* Modal header */}
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#4a9cd6]/10 flex items-center justify-center">
+                  <Download className="w-8 h-8 text-[#4a9cd6]" />
+                </div>
+                <h3 className={`text-xl font-bold mb-2 ${isDark ? "text-white" : "text-gray-900"}`}>
+                  Get Full Specifications
+                </h3>
+                <p className={`text-sm ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+                  Enter your details to access the complete Skywell ET5 specifications
+                </p>
+              </div>
+
+              {/* Form */}
+              <form onSubmit={handleFormSubmit} className="space-y-4">
+                {/* Full Name */}
+                <div>
+                  <label className={`block text-sm font-medium mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                    Full Name *
+                  </label>
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input
+                      type="text"
+                      name="fullName"
+                      value={formData.fullName}
+                      onChange={handleInputChange}
+                      required
+                      className={`w-full pl-10 pr-4 py-3 rounded-lg border transition-colors ${
+                        isDark
+                          ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-[#4a9cd6]"
+                          : "bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-500 focus:border-[#4a9cd6]"
+                      } focus:outline-none focus:ring-2 focus:ring-[#4a9cd6]/20`}
+                      placeholder="Enter your full name"
+                    />
+                  </div>
+                </div>
+
+                {/* Phone Number */}
+                <div>
+                  <label className={`block text-sm font-medium mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                    Phone Number *
+                  </label>
+                  <div className="relative flex">
+                    {/* Country Code Display */}
+                    <div className={`flex items-center px-3 py-3 rounded-l-lg border-r-0 ${
+                      isDark
+                        ? "bg-gray-800 border-gray-700 text-white"
+                        : "bg-gray-50 border-gray-300 text-gray-900"
+                    }`}>
+                      <span className="text-sm font-medium">+971</span>
+                    </div>
+                    
+                    {/* Phone Number Input */}
+                    <div className="relative flex-1">
+                      <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <input
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        required
+                        maxLength={9}
+                        className={`w-full pl-10 pr-4 py-3 rounded-r-lg border-l-0 transition-colors ${
+                          isDark
+                            ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-[#4a9cd6]"
+                            : "bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-500 focus:border-[#4a9cd6]"
+                        } focus:outline-none focus:ring-2 focus:ring-[#4a9cd6]/20`}
+                        placeholder="5X XXX XXXX"
+                      />
+                    </div>
+                  </div>
+                  <p className={`text-xs mt-1 ${isDark ? "text-gray-400" : "text-gray-500"}`}>
+                    Enter 9 digits without spaces or special characters
+                  </p>
+                </div>
+
+                {/* Email */}
+                <div>
+                  <label className={`block text-sm font-medium mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                    Email Address *
+                  </label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                      className={`w-full pl-10 pr-4 py-3 rounded-lg border transition-colors ${
+                        isDark
+                          ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-[#4a9cd6]"
+                          : "bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-500 focus:border-[#4a9cd6]"
+                      } focus:outline-none focus:ring-2 focus:ring-[#4a9cd6]/20`}
+                      placeholder="Enter your email address"
+                    />
+                  </div>
+                </div>
+
+                {/* Submit button */}
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={`w-full py-3 px-4 rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2 ${
+                    isSubmitting
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-[#4a9cd6] hover:bg-[#2d7eb3] text-white shadow-lg hover:shadow-xl"
+                  }`}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <span>Processing...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Download className="w-4 h-4" />
+                      <span>Access Specifications</span>
+                    </>
+                  )}
+                </button>
+              </form>
+
+              {/* Privacy notice */}
+              <p className={`text-xs text-center mt-4 ${isDark ? "text-gray-400" : "text-gray-500"}`}>
+                By submitting this form, you agree to receive communications from Skywell. 
+                Your information will be used to provide you with the requested specifications.
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
