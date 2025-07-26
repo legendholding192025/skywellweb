@@ -431,7 +431,7 @@ export function WhyChooseSection() {
                   Get Skywell Brochure
                 </h3>
                 <p className={`text-sm ${isDark ? "text-gray-300" : "text-gray-600"}`}>
-                  Enter your details to access the complete Skywell ET5 brochure
+                  Enter your details to access Skywell ET5 brochure
                 </p>
               </div>
 

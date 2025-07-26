@@ -680,7 +680,7 @@ export function SpecsSection() {
                   Get Full Specifications
                 </h3>
                 <p className={`text-sm ${isDark ? "text-gray-300" : "text-gray-600"}`}>
-                  Enter your details to access the complete Skywell ET5 specifications
+                  Enter your details to access Skywell ET5 specifications
                 </p>
               </div>
 
