@@ -2,6 +2,8 @@ import { NextResponse } from "next/server"
 import dbConnect from "@/lib/dbConnect"
 import Offer from "@/models/Offer"
 
+export const dynamic = 'force-dynamic'
+
 // GET /api/offers - Get all active offers
 export async function GET(request: Request) {
   try {
