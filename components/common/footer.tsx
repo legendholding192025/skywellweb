@@ -137,7 +137,7 @@ export function Footer() {
             </Link>
             <p className={`${isDark ? "text-gray-300" : "text-gray-600"} text-sm leading-relaxed`}>
               Legend Holding is the official dealership of Skywell Electric Vehicles in the UAE, bringing innovative and
-              sustainable transportation solutions to the region.
+              sustainable transportation solutions to the region
             </p>
             <div className="flex space-x-4">
               {socialLinks.map((social) => (
