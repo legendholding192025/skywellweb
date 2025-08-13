@@ -4,6 +4,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import { CookieConsent } from "@/components/common/cookie-consent"
 import { Toaster } from "@/components/ui/toaster"
+import GoogleAnalytics from "@/components/common/GoogleAnalytics"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -27,6 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <GoogleAnalytics />
         {children}
         <CookieConsent />
         <Toaster />
